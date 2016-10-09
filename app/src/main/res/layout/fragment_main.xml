@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toobar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/colorPrimary"></android.support.v7.widget.Toolbar>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btn_load_more"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Load More"/>
+
+            <Button
+                android:id="@+id/btn_toolbar_show_hide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Toolbar Show And Hide"/>
+
+            <Button
+                android:id="@+id/btn_ai_demo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="AI Demo"/>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>

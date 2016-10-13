@@ -18,6 +18,18 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <service android:name=".service.DownloadSomethingService">
+
+        </service>
+
+        <service android:name=".service.GenerateNumberService">
+
+        </service>
+
+        <service android:name=".service.MessengerService"></service>
+
+        <service android:name=".service.RemoteService"></service>
     </application>
 
 </manifest>

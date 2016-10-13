@@ -19,23 +19,47 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+            <!--加载更多-->
             <Button
                 android:id="@+id/btn_load_more"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Load More"/>
 
+            <!--当滑动时, toolbar隐藏和显示-->
             <Button
                 android:id="@+id/btn_toolbar_show_hide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Toolbar Show And Hide"/>
 
+            <!--语音人工智能-->
             <Button
                 android:id="@+id/btn_ai_demo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="AI Demo"/>
+
+            <!--二维码-->
+            <Button
+                android:id="@+id/btn_zxing_demo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="QR Code"/>
+
+            <!--滑动效果-->
+            <Button
+                android:id="@+id/btn_scroll_demo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Scroll Demo"/>
+
+            <!--Service Demo-->
+            <Button
+                android:id="@+id/btn_service_demo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Service Demo"/>
 
         </LinearLayout>
 

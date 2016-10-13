@@ -40,23 +40,44 @@ public class MainFragment extends BaseFragment {
     @OnClick(R.id.btn_load_more)
     void loadMore() {
         LogUtils.d("test", "Hello");
-        FragmentUtils.replaceFragment(((AppCompatActivity)mActivity).getSupportFragmentManager()
+        FragmentUtils.replaceFragment(mFragmentManager
                                     , new LoadMoreFragment()
                                     , android.R.id.content);
     }
 
     @OnClick(R.id.btn_toolbar_show_hide)
     void toolbarShowHide() {
-        FragmentUtils.replaceFragment(((AppCompatActivity)mActivity).getSupportFragmentManager()
+        FragmentUtils.replaceFragment(mFragmentManager
                                     , new ToolbarShowHideFragment()
                                     , android.R.id.content);
     }
 
     @OnClick(R.id.btn_ai_demo)
     void aidemo() {
-        FragmentUtils.replaceFragment(((AppCompatActivity)mActivity).getSupportFragmentManager()
+        FragmentUtils.replaceFragment(mFragmentManager
                                     , new AIFragment()
                                     , android.R.id.content);
+    }
+
+    @OnClick(R.id.btn_zxing_demo)
+    void zxingdemo() {
+        FragmentUtils.replaceFragment(mFragmentManager
+                                    , new ZXingFragment()
+                                    , android.R.id.content);
+    }
+
+    @OnClick(R.id.btn_scroll_demo)
+    void scrolldemo() {
+        FragmentUtils.replaceFragment(mFragmentManager
+                                    , new ScrollDemoFragment()
+                                    , android.R.id.content);
+    }
+
+    @OnClick(R.id.btn_service_demo)
+    void serviceDemo() {
+        FragmentUtils.replaceFragment(mFragmentManager,
+                                    new ServiceDemoFragment(),
+                                    android.R.id.content);
     }
 
 }

@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import butterknife.ButterKnife;
 public abstract class BaseFragment extends Fragment {
 
     protected Activity mActivity;
+    protected FragmentManager mFragmentManager;
 
     @Nullable
     @Override
@@ -26,6 +29,7 @@ public abstract class BaseFragment extends Fragment {
         ButterKnife.bind(this, view);
 
         mActivity = getActivity();
+        mFragmentManager = ((AppCompatActivity)mActivity).getSupportFragmentManager();
 
         return view;
     }

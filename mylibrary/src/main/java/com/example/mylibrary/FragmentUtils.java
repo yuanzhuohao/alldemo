@@ -10,6 +10,13 @@ import android.support.v4.app.FragmentManager;
 
 public class FragmentUtils {
 
+    public static void addFragmentToActivity(FragmentManager fm, Fragment f, int containerId) {
+        String tag = f.getClass().getName();
+        fm.beginTransaction()
+                .add(containerId, f, tag)
+                .commit();
+    }
+
     public static void replaceFragment(FragmentManager fm, Fragment f, int containerId) {
         String tag = f.getClass().getName();
         fm.beginTransaction()

@@ -1,6 +1,10 @@
 package com.example.mylibrary;
 
 import rx.Observable;
+import rx.Observer;
+import rx.Subscription;
+import rx.functions.Action1;
+import rx.functions.Func1;
 import rx.subjects.PublishSubject;
 import rx.subjects.SerializedSubject;
 import rx.subjects.Subject;
@@ -23,11 +27,53 @@ public class RxBus {
         return instance;
     }
 
-    public Observable getObservable() {
-        return bus;
+    public Subscription register(final Observer<Object> observer, final Class clazz) {
+        return bus.asObservable()
+                .filter(new Func1<Object, Boolean>() {
+                    @Override
+                    public Boolean call(Object o) {
+                        if (clazz.isInstance(o)) {
+                            return true;
+                        }
+
+                        return false;
+                    }
+                })
+                .subscribe(observer);
     }
 
-    public boolean hasObserver() {
+    public Subscription register(final Action1 action1, final Class clazz) {
+        return bus.asObservable()
+                .filter(new Func1<Object, Boolean>() {
+                    @Override
+                    public Boolean call(Object o) {
+                        if (clazz.isInstance(o)) {
+                            return true;
+                        }
+
+                        return false;
+                    }
+                })
+                .subscribe(action1);
+    }
+
+    public void register(Observer<Object> observer) {
+        register(observer, Object.class);
+    }
+
+    public void register(Action1 action1) {
+        register(action1, Object.class);
+    }
+
+    public void send(Object o) {
+        bus.onNext(o);
+    }
+
+    public Observable<Object> getObservable() {
+        return bus.asObservable();
+    }
+
+    public boolean hasObservers() {
         if (bus.hasObservers()) {
             return true;
         } else {
@@ -35,4 +81,7 @@ public class RxBus {
         }
     }
 
+    public interface Action {
+        void func(Object o);
+    }
 }

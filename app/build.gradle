@@ -37,4 +37,8 @@ dependencies {
     // ZXING
     compile 'com.google.zxing:core:3.3.0'
     compile 'com.google.zxing:android-integration:3.3.0'
+
+    // dagger
+    compile 'com.google.dagger:dagger:2.4'
+    provided "com.google.dagger:dagger-compiler:2.4"
 }

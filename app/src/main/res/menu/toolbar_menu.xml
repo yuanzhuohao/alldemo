@@ -4,5 +4,11 @@
         android:title="Setting">
     </item>
 
-    <item android:title="Take Photos"></item>
+    <item
+        android:id="@+id/item_toolbar_take_a_photo"
+        android:title="Take a Photo"></item>
+
+    <item
+        android:id="@+id/item_toolbar_album"
+        android:title="Album"></item>
 </menu>

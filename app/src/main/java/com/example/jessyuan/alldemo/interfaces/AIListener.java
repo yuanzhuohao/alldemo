@@ -1,4 +1,4 @@
-package com.example.jessyuan.alldemo;
+package com.example.jessyuan.alldemo.interfaces;
 
 import ai.api.model.AIError;
 import ai.api.model.AIResponse;

@@ -27,6 +27,10 @@ dependencies {
     })
     compile project(':mylibrary')
 
+    compile 'com.android.support:appcompat-v7:25.0.0'
+    compile 'com.android.support:recyclerview-v7:24.2.1'
+    compile 'com.android.support:design:25.0.0'
+
     // butterknife
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
@@ -35,8 +39,9 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
 
     // ZXING
-    compile 'com.google.zxing:core:3.3.0'
-    compile 'com.google.zxing:android-integration:3.3.0'
+//    compile 'com.google.zxing:core:3.3.0'
+//    compile 'com.google.zxing:android-integration:3.3.0'
+    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
 
     // dagger
     compile 'com.google.dagger:dagger:2.4'

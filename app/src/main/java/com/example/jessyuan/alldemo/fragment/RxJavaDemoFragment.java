@@ -1,6 +1,7 @@
 package com.example.jessyuan.alldemo.fragment;
 
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,7 +80,7 @@ public class RxJavaDemoFragment extends BaseNaviFragment {
 
             @Override
             public void onNext(Object event) {
-                LogUtils.i("observer2", "Everything");
+                LogUtils.i("observer2", "Everything" + (Looper.myLooper() == Looper.getMainLooper()));
             }
         };
 
@@ -91,7 +92,8 @@ public class RxJavaDemoFragment extends BaseNaviFragment {
                 LogUtils.i("Action1", ((Event)o).getName());
             }
         }, Event.class);
-        mRxBus.send("String");
+
+        mRxBus.send("string");
     }
 
     public class Event {

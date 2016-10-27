@@ -36,6 +36,10 @@ public abstract class BaseToolbarFragment extends BaseFragment {
         return mToolbar;
     }
 
+
+    /**
+     * 设置Toolbar, 布局要有toolbar
+     */
     abstract void setToolbar();
 
 }

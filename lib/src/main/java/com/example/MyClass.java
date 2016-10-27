@@ -59,5 +59,7 @@ public class MyClass {
         JsonArray jsonArray = parser.parse(json).getAsJsonObject().getAsJsonObject("data").getAsJsonArray("list");
         System.out.println(JsonParseUtils.parseToArray(json, Vehicle[].class, "data", "list").get(0).getCommno());
 
+
+
     }
 }

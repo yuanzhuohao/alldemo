@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 
 import com.example.jessyuan.alldemo.R;
 import com.example.mylibrary.FragmentUtils;
+import com.example.mylibrary.LogUtils;
 import com.example.mylibrary.ToastUtils;
 
 import java.io.File;
@@ -31,6 +32,8 @@ import butterknife.OnClick;
 public class MainFragment extends BaseToolbarFragment {
 
     private static final int REQUEST_TAKE_PICTURES = 1;
+
+    private Uri photoUri;
 
     @Nullable
     @Override
@@ -58,7 +61,6 @@ public class MainFragment extends BaseToolbarFragment {
             public boolean onMenuItemClick(MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.item_toolbar_take_a_photo:
-                        dispatchTakePictureIntent();
                         ToastUtils.makeTextShort(getActivity(), "Take a Photo");
                         return true;
                     default:
@@ -82,40 +84,25 @@ public class MainFragment extends BaseToolbarFragment {
                 android.R.id.content);
     }
 
-    private void dispatchTakePictureIntent() {
-        Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        if (intent.resolveActivity(getActivity().getPackageManager()) != null) {
-
-
-            File file = null;
-            try {
-                file = createImageFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            if (file != null) {
-                Uri photoUri = FileProvider.getUriForFile(getActivity(),
-                                        "com.example.jessyuan.alldemo.fileprovider",
-                                        file);
-                intent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
-                startActivityForResult(intent, REQUEST_TAKE_PICTURES);
-            }
-
-        }
+    @OnClick(R.id.btn_dagger_demo)
+    void daggerdemo() {
+        FragmentUtils.replaceFragment(getFragmentManager(),
+                new DaggerDemoFragment(),
+                android.R.id.content);
     }
 
-    private File createImageFile() throws IOException {
-        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-        String imageFileName = "JPEG_" + timeStamp + "_";
-        File storageDir = getActivity().getExternalFilesDir(Environment.DIRECTORY_PICTURES);
-        File image = File.createTempFile(imageFileName, ".jpg", storageDir);
-
-        return image;
+    @OnClick(R.id.btn_qrcode_scan_demo)
+    void qrcodescandemo() {
+        FragmentUtils.replaceFragment(getFragmentManager(),
+                new QRCodeScanFragment(),
+                android.R.id.content);
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
+    @OnClick(R.id.btn_bottom_navigator_demo)
+    void bttomnavigatordemo() {
+        FragmentUtils.replaceFragment(getFragmentManager(),
+                new BottomNaviFragment(),
+                android.R.id.content);
     }
+
 }

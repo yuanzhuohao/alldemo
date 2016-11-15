@@ -10,6 +10,7 @@ buildscript {
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+
     }
 }
 
@@ -22,4 +23,34 @@ allprojects {
 
 task clean(type: Delete) {
     delete rootProject.buildDir
+}
+
+ext {
+    supportLibrary = "25.0.0"
+    dagger_version = "2.4"
+    picasso_version = "2.5.2"
+    retrofit_version = "2.1.0"
+    rxjava_version = "1.2.0"
+    rxandroid_version = "1.2.1"
+    gson_version = "2.6.2"
+
+    support = [
+            appcompat_v7 : "com.android.support:appcompat-v7:${supportLibrary}",
+            design : "com.android.support:design:${supportLibrary}",
+            recyclerview : "com.android.support:recyclerview-v7:24.2.1"
+    ]
+
+    retrofit = [
+            retrofit : "com.squareup.retrofit2:retrofit:${retrofit_version}",
+            converter_gson : "com.squareup.retrofit2:converter-gson:${retrofit_version}",
+            adapter_rxjava : "com.squareup.retrofit2:adapter-rxjava:${retrofit_version}"
+    ]
+
+    reactive = [
+            rxjava : "io.reactivex:rxjava:${rxjava_version}",
+            rxandroid : "io.reactivex:rxandroid:${rxandroid_version}"
+    ]
+
+    gson = "com.google.code.gson:gson:${gson_version}"
+    picasso = "com.squareup.picasso:picasso:${picasso_version}"
 }

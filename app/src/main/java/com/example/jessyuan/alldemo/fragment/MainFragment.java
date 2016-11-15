@@ -1,27 +1,15 @@
 package com.example.jessyuan.alldemo.fragment;
 
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Environment;
-import android.provider.MediaStore;
 import android.support.annotation.Nullable;
-import android.support.v4.content.FileProvider;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jessyuan.alldemo.R;
+import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.mylibrary.FragmentUtils;
-import com.example.mylibrary.LogUtils;
-import com.example.mylibrary.ToastUtils;
-
-import java.io.File;
-import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import butterknife.OnClick;
 
@@ -30,10 +18,6 @@ import butterknife.OnClick;
  */
 
 public class MainFragment extends BaseToolbarFragment {
-
-    private static final int REQUEST_TAKE_PICTURES = 1;
-
-    private Uri photoUri;
 
     @Nullable
     @Override
@@ -53,21 +37,8 @@ public class MainFragment extends BaseToolbarFragment {
     }
 
     @Override
-    void setToolbar() {
-        getToolbar().setTitle("All Demo");
-        getToolbar().inflateMenu(R.menu.toolbar_menu);
-        getToolbar().setOnMenuItemClickListener(new Toolbar.OnMenuItemClickListener() {
-            @Override
-            public boolean onMenuItemClick(MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.item_toolbar_take_a_photo:
-                        ToastUtils.makeTextShort(getActivity(), "Take a Photo");
-                        return true;
-                    default:
-                        return false;
-                }
-            }
-        });
+    public void setToolbar(Toolbar toolbar) {
+        toolbar.setTitle("All Demo");
     }
 
     @OnClick(R.id.btn_rxjava_demo)
@@ -80,7 +51,7 @@ public class MainFragment extends BaseToolbarFragment {
     @OnClick(R.id.btn_pick_pictures)
     void pickpicture() {
         FragmentUtils.replaceFragment(getFragmentManager(),
-                new PickPicturesFragment(),
+                new AlbumFragment(),
                 android.R.id.content);
     }
 
@@ -98,10 +69,10 @@ public class MainFragment extends BaseToolbarFragment {
                 android.R.id.content);
     }
 
-    @OnClick(R.id.btn_bottom_navigator_demo)
-    void bttomnavigatordemo() {
+    @OnClick(R.id.btn_popupwindow_demo)
+    void popupwindowdemo() {
         FragmentUtils.replaceFragment(getFragmentManager(),
-                new BottomNaviFragment(),
+                new PopupWindowDemoFragment(),
                 android.R.id.content);
     }
 

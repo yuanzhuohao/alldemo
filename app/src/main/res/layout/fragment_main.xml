@@ -22,7 +22,7 @@
             android:id="@+id/btn_pick_pictures"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Pick Pictures"/>
+            android:text="Album"/>
 
         <Button
             android:id="@+id/btn_dagger_demo"
@@ -41,6 +41,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="BottomNavigatorView"/>
+
+        <Button
+            android:id="@+id/btn_popupwindow_demo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="PopupWindow Demo"/>
+
 
     </LinearLayout>
 

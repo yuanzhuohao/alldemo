@@ -1,16 +1,9 @@
-package com.example.jessyuan.alldemo.fragment;
+package com.example.jessyuan.alldemo.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewGroup;
 
 import com.example.jessyuan.alldemo.R;
 
@@ -28,7 +21,7 @@ public abstract class BaseToolbarFragment extends BaseFragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         mToolbar = (Toolbar) view.findViewById(R.id.toolbar);
-        setToolbar();
+        setToolbar(getToolbar());
     }
 
     protected Toolbar getToolbar() {
@@ -40,6 +33,6 @@ public abstract class BaseToolbarFragment extends BaseFragment {
     /**
      * 设置Toolbar, 布局要有toolbar
      */
-    abstract void setToolbar();
+    public abstract void setToolbar(Toolbar toolbar);
 
 }

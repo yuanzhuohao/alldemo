@@ -1,4 +1,4 @@
-package com.example.jessyuan.alldemo.fragment;
+package com.example.jessyuan.alldemo.base;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;

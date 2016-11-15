@@ -143,7 +143,7 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
             childView = new SparseArray<>();
         }
 
-        public View getViewById(int viewId) {
+        public <T>T getViewById(int viewId) {
             View view = childView.get(viewId);
 
             if (view == null) {
@@ -151,7 +151,7 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
                 childView.put(viewId, view);
             }
 
-            return view;
+            return (T)view;
         }
 
         public TextView getTextViewById(int viewId) {

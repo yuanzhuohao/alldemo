@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:title="Setting">
-    </item>
-
-    <item
         android:id="@+id/item_toolbar_take_a_photo"
         android:title="Take a Photo"></item>
 
     <item
-        android:id="@+id/item_toolbar_album"
-        android:title="Album"></item>
+        android:id="@+id/item_toolbar_pick_pictures"
+        android:title="Pick Pictures"></item>
 </menu>

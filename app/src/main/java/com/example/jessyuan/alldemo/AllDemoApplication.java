@@ -3,12 +3,15 @@ package com.example.jessyuan.alldemo;
 import android.app.Application;
 
 /**
- * Created by Jess Yuan on 20/10/2016.
+ * Created by JessYuan on 14/11/2016.
  */
 
 public class AllDemoApplication extends Application {
+
     @Override
     public void onCreate() {
         super.onCreate();
+        AllDemoApplicationContext.sApplication = this;
+        AllDemoApplicationContext.sContext = this.getApplicationContext();
     }
 }

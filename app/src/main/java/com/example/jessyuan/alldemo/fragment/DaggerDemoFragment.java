@@ -1,16 +1,14 @@
 package com.example.jessyuan.alldemo.fragment;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jessyuan.alldemo.R;
-import com.example.mylibrary.ToastUtils;
-import com.google.zxing.integration.android.IntentIntegrator;
-import com.google.zxing.integration.android.IntentResult;
+import com.example.jessyuan.alldemo.base.BaseNaviFragment;
 
 /**
  * Created by Jess Yuan on 20/10/2016.
@@ -18,10 +16,6 @@ import com.google.zxing.integration.android.IntentResult;
 
 public class DaggerDemoFragment extends BaseNaviFragment {
 
-    @Override
-    void setToolbar() {
-        getToolbar().setTitle("Dagger Demo");
-    }
 
     @Nullable
     @Override
@@ -35,4 +29,8 @@ public class DaggerDemoFragment extends BaseNaviFragment {
     }
 
 
+    @Override
+    public void setToolbar(Toolbar toolbar) {
+        toolbar.setTitle("Dagger Demo");
+    }
 }

@@ -3,11 +3,13 @@ package com.example.jessyuan.alldemo.fragment;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.example.jessyuan.alldemo.R;
+import com.example.jessyuan.alldemo.base.BaseNaviFragment;
 import com.example.mylibrary.ToastUtils;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
@@ -23,8 +25,8 @@ public class QRCodeScanFragment extends BaseNaviFragment {
     private String toast;
 
     @Override
-    void setToolbar() {
-        getToolbar().setTitle("QRCode Scan Demo");
+    public void setToolbar(Toolbar toolbar) {
+        toolbar.setTitle("QRCode Scan Demo");
     }
 
     @Nullable

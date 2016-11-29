@@ -13,9 +13,11 @@ import butterknife.ButterKnife;
 
 public class BaseFragment extends Fragment {
 
+    protected View mRootView;
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ButterKnife.bind(this,view);
+        mRootView = view;
     }
 }

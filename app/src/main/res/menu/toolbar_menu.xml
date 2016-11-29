@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:android="http://schemas.android.com/apk/res/android">
     <item
-        android:id="@+id/item_toolbar_take_a_photo"
-        android:title="Take a Photo"></item>
+            android:id="@+id/item_toolbar_camera"
+            android:icon="@drawable/ic_camera_alt_white_24dp"
+            android:title="camera"
+            app:showAsAction="always"></item>
 
-    <item
-        android:id="@+id/item_toolbar_pick_pictures"
-        android:title="Pick Pictures"></item>
 </menu>

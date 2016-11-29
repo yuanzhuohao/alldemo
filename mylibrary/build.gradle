@@ -39,6 +39,5 @@ dependencies {
     compile rootProject.retrofit.adapter_rxjava
     compile rootProject.retrofit.converter_gson
     compile rootProject.gson
-    compile rootProject.picasso
 
 }

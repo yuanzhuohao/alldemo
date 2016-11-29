@@ -8,6 +8,7 @@ import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.mylibrary.R;
@@ -20,52 +21,37 @@ import java.util.List;
 
 public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRCLVAdapter.CommonViewHolder> {
 
-    private final int VIEW_TYPE_ITEM = 0;
-    private final int VIEW_TYPE_LOADING = 1;
-
-    private OnLoadMoreListener mOnLoadMoreListener;
-
     private int mItemLayoutId;
     private Context mContext;
-    private List<T> data;
-
-    private boolean isLoading = false;
-    private int visibleThreshold = 2;
-    private int lastVisibleView, totalItemCount;
+    protected List<T> mData;
 
     private RecyclerView mRecyclerView;
 
     public CommonRCLVAdapter(int itemLayoutId, Context context, List<T> data) {
         mItemLayoutId = itemLayoutId;
         mContext = context;
-        this.data = data;
+        this.mData = data;
     }
 
     public CommonRCLVAdapter(RecyclerView recyclerView, int itemLayoutId, Context context, List<T> data) {
         mItemLayoutId = itemLayoutId;
         mContext = context;
-        this.data = data;
+        this.mData = data;
         mRecyclerView = recyclerView;
-
-        setRecyclerViewScrollingListener();
     }
 
     @Override
     public CommonViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = null;
-        if (viewType == VIEW_TYPE_ITEM) {
-            view = LayoutInflater.from(mContext).inflate(mItemLayoutId, parent, false);
-        } else if (viewType == VIEW_TYPE_LOADING) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_loading,parent, false);
-        }
+        View view = LayoutInflater.from(mContext).inflate(mItemLayoutId, parent, false);
+
 
         return new CommonViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(CommonViewHolder holder, int position) {
-        if (position != data.size()) {
-            onBindViewHolder(holder, position, data.get(position));
+        if (position != mData.size()) {
+            onBindViewHolder(holder, position, mData.get(position));
         }
     }
 
@@ -73,65 +59,19 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
 
     @Override
     public int getItemCount() {
-        if (mOnLoadMoreListener == null) {
-            return data.size();
-        } else {
-            return data.size() + 1;
-        }
+        return mData.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (mOnLoadMoreListener == null) {
-            return VIEW_TYPE_ITEM;
-        } else {
-            return position == data.size() ? VIEW_TYPE_LOADING : VIEW_TYPE_ITEM;
-        }
-    }
 
     public void setData(List<T> data) {
-        this.data = data;
+        this.mData = data;
         notifyDataSetChanged();
     }
 
-    public void setOnLoadMoreListener(OnLoadMoreListener listener) {
-        mOnLoadMoreListener = listener;
-    }
-
-    public void loaded() {
-        isLoading = false;
-    }
-
-    private void setRecyclerViewScrollingListener() {
-        final LinearLayoutManager linearLayoutManager = (LinearLayoutManager) mRecyclerView.getLayoutManager();
-        mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
-            @Override
-            public void onScrollStateChanged(RecyclerView recyclerView, int newState) {
-                super.onScrollStateChanged(recyclerView, newState);
-            }
-
-            @Override
-            public void onScrolled(RecyclerView recyclerView, int dx, int dy) {
-                super.onScrolled(recyclerView, dx, dy);
-
-                totalItemCount = linearLayoutManager.getItemCount();
-                lastVisibleView = linearLayoutManager.findLastVisibleItemPosition();
-
-                if (!isLoading && (totalItemCount <= (lastVisibleView + visibleThreshold))) {
-                    if (mOnLoadMoreListener != null) {
-                        isLoading = true;
-                        new Handler().post(new Runnable() {
-                            @Override
-                            public void run() {
-                                mOnLoadMoreListener.onLoadMore();
-
-                            }
-                        });
-                    }
-
-                }
-            }
-        });
+    public void addData(List<T> data) {
+        int startIndex = mData.size();
+        this.mData.addAll(data);
+        notifyItemRangeInserted(startIndex, data.size());
     }
 
     public static class CommonViewHolder extends RecyclerView.ViewHolder {
@@ -156,6 +96,10 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
 
         public TextView getTextViewById(int viewId) {
             return (TextView)getViewById(viewId);
+        }
+
+        public ImageView getImageViewById(int viewId) {
+            return (ImageView)getViewById(viewId);
         }
 
         public void setViewClick(View view, View.OnClickListener listener) {

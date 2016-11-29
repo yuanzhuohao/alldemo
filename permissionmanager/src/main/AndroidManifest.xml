@@ -1,0 +1,12 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+          package="com.example.permissionmanager">
+
+    <application
+            >
+
+        <activity android:name=".PermissionRequestDelegateActivity"
+                android:theme="@style/TranslucentAppTheme"/>
+
+    </application>
+
+</manifest>

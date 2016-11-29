@@ -50,6 +50,7 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':mylibrary')
+    compile project(':permissionmanager')
 
     compile rootProject.support.appcompat_v7
     compile rootProject.support.design
@@ -59,8 +60,8 @@ dependencies {
     compile 'com.jakewharton:butterknife:8.4.0'
     apt 'com.jakewharton:butterknife-compiler:8.4.0'
 
-    // ZXING
-    compile 'com.journeyapps:zxing-android-embedded:3.4.0'
+    compile rootProject.glide
+    compile rootProject.viewpaper_indicator
 
     // dagger
     compile "com.google.dagger:dagger:${rootProject.dagger_version}"

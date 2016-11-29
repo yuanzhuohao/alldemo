@@ -33,6 +33,7 @@ ext {
     rxjava_version = "1.2.0"
     rxandroid_version = "1.2.1"
     gson_version = "2.6.2"
+    glide_version = "3.7.0"
 
     support = [
             appcompat_v7 : "com.android.support:appcompat-v7:${supportLibrary}",
@@ -53,4 +54,6 @@ ext {
 
     gson = "com.google.code.gson:gson:${gson_version}"
     picasso = "com.squareup.picasso:picasso:${picasso_version}"
+    glide = "com.github.bumptech.glide:glide:${glide_version}"
+    viewpaper_indicator = "com.viewpagerindicator:parent:2.4.1"
 }

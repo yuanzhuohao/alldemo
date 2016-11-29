@@ -1,6 +1,6 @@
 package com.example.jessyuan.alldemo.component;
 
-import com.example.jessyuan.alldemo.fragment.DaggerDemoFragment;
+import android.support.v4.app.Fragment;
 
 import javax.inject.Singleton;
 
@@ -11,6 +11,7 @@ import dagger.Component;
  */
 
 @Singleton
+@Component
 public interface AppComponent {
-    void inject(DaggerDemoFragment fragment);
+    void inject(Fragment fragment);
 }

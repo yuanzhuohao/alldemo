@@ -23,7 +23,7 @@ public class BitmapUtils {
         return BitmapFactory.decodeFile(path, options);
     }
 
-    public static Bitmap scaleWithResId(Resources res, int resId, int reqHeight, int reqWidth) {
+    public static Bitmap scaleWithResID(Resources res, int resId, int reqHeight, int reqWidth) {
         BitmapFactory.Options options = new BitmapFactory.Options();
         options.inJustDecodeBounds = true;
         BitmapFactory.decodeResource(res, resId, options);

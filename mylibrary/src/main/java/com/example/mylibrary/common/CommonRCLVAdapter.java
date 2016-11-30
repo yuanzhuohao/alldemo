@@ -23,7 +23,7 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
 
     private int mItemLayoutId;
     private Context mContext;
-    protected List<T> mData;
+    private List<T> mData;
 
     private RecyclerView mRecyclerView;
 

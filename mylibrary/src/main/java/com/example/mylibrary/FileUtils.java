@@ -7,6 +7,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * Created by Jess Yuan on 21/10/2016.
@@ -14,18 +15,34 @@ import java.util.Date;
 
 public class FileUtils {
 
+    private static final String TAG = "文件工具类 FileUtils";
+
     /**
      *  该方法创建图片文件，并把它保存在App的包名路径目录的Pictures目录下。
-     * @param context
+     * @param directory
      * @return
      * @throws IOException
      */
-    public static File createImageFile(Context context) throws IOException {
-        String tempString = new SimpleDateFormat("yyyyMMddHH_mmss").format(new Date());
+    public static File createImageFile(String directory) throws IOException {
+        String tempString = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String filename = "JPEG_" + tempString;
-        File storageDir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File storageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath()
+                                + "/" + directory);
 
-        File file = File.createTempFile(filename, ".jpg", storageDir);
+        if (!storageDir.exists()) {
+            if (!storageDir.mkdir()) {
+                LogUtils.d(TAG, "Oops! Failed create " + directory + " directory");
+                return null;
+            }
+        }
+
+        File file = null;
+
+        try {
+             file = File.createTempFile(filename, ".jpg", storageDir);
+        } catch (IOException ex) {
+            LogUtils.d(TAG, "Oops! Failed create " + filename + " file");
+        }
 
         return file;
     }
@@ -38,7 +55,7 @@ public class FileUtils {
      * @throws IOException
      */
     public static File createFileToAppDataDir(Context context, String suffix) throws IOException {
-        String tempString = new SimpleDateFormat("yyyyMMddHH_mmss").format(new Date());
+        String tempString = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String filename = tempString;
         File storageDir = context.getExternalFilesDir("Data");
         File file = File.createTempFile(filename, suffix, storageDir);
@@ -55,7 +72,7 @@ public class FileUtils {
      * @throws IOException
      */
     public static File createFileToDataDir(String suffix, String appName) throws IOException {
-        String tempString = new SimpleDateFormat("yyyyMMddHH_mmss").format(new Date());
+        String tempString = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String filename = tempString;
         File storageDir = new File(Environment.getExternalStorageDirectory().getPath() + "/" + appName);
         if (!storageDir.exists()) {

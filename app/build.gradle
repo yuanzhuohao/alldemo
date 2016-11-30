@@ -57,13 +57,12 @@ dependencies {
     compile rootProject.support.recyclerview
 
     // butterknife
-    compile 'com.jakewharton:butterknife:8.4.0'
-    apt 'com.jakewharton:butterknife-compiler:8.4.0'
+    compile rootProject.butterknife.main
+    apt rootProject.butterknife.compiler
 
     compile rootProject.glide
-    compile rootProject.viewpaper_indicator
 
     // dagger
-    compile "com.google.dagger:dagger:${rootProject.dagger_version}"
-    provided "com.google.dagger:dagger-compiler:${rootProject.dagger_version}"
+    compile rootProject.dagger.main
+    provided rootProject.dagger.compiler
 }

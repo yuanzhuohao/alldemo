@@ -2,20 +2,25 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-    android:orientation="vertical">
+              android:orientation="vertical">
 
     <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="12dp">
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="@dimen/padding_medium">
 
         <Button
-            android:id="@+id/btn_album"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Album"/>
+                android:id="@+id/btn_album"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Album"/>
 
+        <Button
+                android:id="@+id/btn_custom_view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Custom View"/>
 
     </LinearLayout>
 

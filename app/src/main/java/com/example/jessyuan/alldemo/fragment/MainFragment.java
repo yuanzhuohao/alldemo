@@ -4,11 +4,13 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.mylibrary.FragmentUtils;
+import com.example.mylibrary.ToastUtils;
 
 import butterknife.OnClick;
 
@@ -36,4 +38,28 @@ public class MainFragment extends BaseToolbarFragment {
                 android.R.id.content);
     }
 
+    @OnClick(R.id.btn_custom_view)
+    void customView() {
+        FragmentUtils.replaceFragment(getFragmentManager(),
+                new CustomViewFragment(),
+                android.R.id.content);
+    }
+
+    private long lastTimeStamp = 0;
+
+    @Override
+    public void onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+
+            if ((lastTimeStamp != 0) && (System.currentTimeMillis() - lastTimeStamp < 2000)) {
+                getActivity().finish();
+            } else {
+                lastTimeStamp = System.currentTimeMillis();
+                ToastUtils.makeTextShort(getActivity(), "再点击次退出");
+
+            }
+        } else {
+            super.onKeyDown(keyCode, event);
+        }
+    }
 }

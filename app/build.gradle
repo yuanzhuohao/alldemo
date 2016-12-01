@@ -65,4 +65,5 @@ dependencies {
     // dagger
     compile rootProject.dagger.main
     provided rootProject.dagger.compiler
+
 }

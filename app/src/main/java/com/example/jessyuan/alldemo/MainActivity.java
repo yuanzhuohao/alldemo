@@ -9,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.jessyuan.alldemo.fragment.MainFragment;
+import com.example.jessyuan.alldemo.interfaces.IFragmentKeyDown;
 import com.example.mylibrary.FragmentUtils;
 import com.example.mylibrary.ToastUtils;
 
@@ -24,20 +25,14 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private long lastTimeStamp = 0;
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
-            if (getSupportFragmentManager().findFragmentById(android.R.id.content) instanceof MainFragment) {
-                if ((lastTimeStamp != 0) && (System.currentTimeMillis() - lastTimeStamp < 2000)) {
-                    finish();
-                } else {
-                    lastTimeStamp = System.currentTimeMillis();
-                    ToastUtils.makeTextShort(this, "再点击次退出");
-                }
-            } else {
-                super.onKeyDown(keyCode, event);
-            }
+        Fragment fragment = getSupportFragmentManager().findFragmentById(android.R.id.content);
+        if (fragment != null && fragment instanceof IFragmentKeyDown
+                && fragment instanceof MainFragment) {
+            ((IFragmentKeyDown)fragment).onKeyDown(keyCode, event);
+        } else {
+            super.onKeyDown(keyCode, event);
         }
 
         return true;

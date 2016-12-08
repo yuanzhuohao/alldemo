@@ -5,11 +5,12 @@ buildscript {
         jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.2.2'
+        classpath 'com.android.tools.build:gradle:2.2.3'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+        classpath 'com.google.gms:google-services:3.0.0'
 
     }
 }
@@ -29,8 +30,8 @@ ext {
     supportLibrary = "25.0.0"
     dagger_version = "2.4"
     retrofit_version = "2.1.0"
-    rxjava_version = "1.2.0"
-    rxandroid_version = "1.2.1"
+    rxjava_version = "2.0.1"
+    rxandroid_version = "2.0.1"
     gson_version = "2.6.2"
     glide_version = "3.7.0"
     butterknife_version = "8.4.0"
@@ -44,12 +45,12 @@ ext {
     retrofit = [
             retrofit : "com.squareup.retrofit2:retrofit:${retrofit_version}",
             converter_gson : "com.squareup.retrofit2:converter-gson:${retrofit_version}",
-            adapter_rxjava : "com.squareup.retrofit2:adapter-rxjava:${retrofit_version}"
+            adapter_rxjava : "com.jakewharton.retrofit:retrofit2-rxjava2-adapter:1.0.0"
     ]
 
     reactive = [
-            rxjava : "io.reactivex:rxjava:${rxjava_version}",
-            rxandroid : "io.reactivex:rxandroid:${rxandroid_version}"
+            rxjava : "io.reactivex.rxjava2:rxjava:${rxjava_version}",
+            rxandroid : "io.reactivex.rxjava2:rxandroid:${rxandroid_version}"
     ]
 
     dagger = [

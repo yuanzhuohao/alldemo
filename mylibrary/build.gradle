@@ -32,7 +32,6 @@ dependencies {
     compile rootProject.reactive.rxjava
     compile rootProject.reactive.rxandroid
     compile rootProject.retrofit.retrofit
-    compile rootProject.retrofit.adapter_rxjava
     compile rootProject.retrofit.converter_gson
     compile rootProject.gson
 

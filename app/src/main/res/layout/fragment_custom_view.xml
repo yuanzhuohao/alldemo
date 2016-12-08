@@ -4,11 +4,10 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
-    <com.example.mylibrary.ui.CircleImageView
-            android:id="@+id/image_view"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:layout_margin="@dimen/margin_large"
-            />
+    <Button
+            android:id="@+id/btn_button1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="CompositeDisposable"/>
 
 </LinearLayout>

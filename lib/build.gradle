@@ -2,11 +2,8 @@ apply plugin: 'java'
 
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
-    compile 'com.google.code.gson:gson:2.7'
 
-    // rxjava
-    compile 'io.reactivex:rxjava:1.2.0'
+    compile rootProject.gson
+    compile rootProject.reactive.rxjava
+    
 }
-
-sourceCompatibility = "1.8"
-targetCompatibility = "1.8"

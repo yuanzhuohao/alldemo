@@ -1,15 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
+apply plugin: 'com.google.gms.google-services'
 
 android {
     compileSdkVersion 24
     buildToolsVersion "24.0.2"
-
-    //recommend
-    dexOptions {
-        jumboMode = true
-    }
-
 
     defaultConfig {
         applicationId "com.example.jessyuan.alldemo"
@@ -18,9 +13,6 @@ android {
         versionCode 1
         versionName "1.0"
 
-        /**
-         * you can use multiDex and install it in your ApplicationLifeCycle implement
-         */
         multiDexEnabled true
 
     }
@@ -65,5 +57,9 @@ dependencies {
     // dagger
     compile rootProject.dagger.main
     provided rootProject.dagger.compiler
+
+    compile 'com.google.firebase:firebase-crash:9.6.1'
+
+    compile 'com.google.firebase:firebase-auth:9.6.1'
 
 }

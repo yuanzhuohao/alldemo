@@ -4,21 +4,27 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.ActionBar;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.mylibrary.FragmentUtils;
+import com.example.mylibrary.RxBus;
 import com.example.mylibrary.ToastUtils;
 
 import butterknife.OnClick;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
 
 /**
  * Created by Jess Yuan on 17/10/2016.
  */
 
 public class MainFragment extends BaseToolbarFragment {
+
+    private static final String TAG = "MainFragment";
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {

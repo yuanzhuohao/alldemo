@@ -1,12 +1,8 @@
-package com.example.jessyuan.alldemo.fragment;
+package com.example.jessyuan.alldemo.album;
 
-import android.app.Dialog;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.Nullable;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.app.Fragment;
-import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,7 +11,6 @@ import android.widget.TextView;
 
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.adapter.ImageViewPagerAdapter;
-import com.example.jessyuan.alldemo.base.BaseFragment;
 import com.example.jessyuan.alldemo.model.Image;
 
 import java.util.ArrayList;

@@ -42,6 +42,10 @@ public class JsonParseUtils {
 
         int n = args.size();
 
+        if (n == 0) {
+            return parser.parse(json).getAsJsonObject();
+        }
+
         if (n == 1) {
             return parser.parse(json).getAsJsonObject().getAsJsonObject(arg[0]);
         } else {
@@ -63,10 +67,10 @@ public class JsonParseUtils {
     public static <T> List<T> parseToArray(String json, Class<T[]> clazz) {
         T[] list = new Gson().fromJson(json, clazz);
 
-        return Arrays.asList(list);
+        return new ArrayList<>(Arrays.asList(list));
     }
 
-    /** 把json对象转为JsonArray对象
+    /** 把json对象转为List<T>对象
      * @param json
      * @param clazz
      * @param <T>
@@ -75,10 +79,10 @@ public class JsonParseUtils {
     public static <T> List<T> parseToArray(JsonElement json, Class<T[]> clazz) {
         T[] list = new Gson().fromJson(json, clazz);
 
-        return Arrays.asList(list);
+        return new ArrayList<>(Arrays.asList(list));
     }
 
-    /** 把json对象转为JsonArray对象, 第二个参数按顺序的多层嵌套的json对象头部字符串, 最后一个参数是
+    /** 把json对象转为List<T>对象, 第二个参数按顺序的多层嵌套的json对象头部字符串, 最后一个参数是
      *  JsonArray的头部字符串
      * @param json
      * @param clazz
@@ -86,22 +90,10 @@ public class JsonParseUtils {
      * @return
      */
     public static <T> List<T> parseToArray(JsonElement json, Class<T[]> clazz, String... arg) {
-        ArrayList<String> args = new ArrayList<>();
-        for (String s : arg) {
-            args.add(s);
-        }
-
-        String lastArg = args.get(args.size() - 1);
-        args.remove(args.size() - 1);
-
-        String jsonOb = parseToJsonObject(json.toString(), args.toArray(new String[args.size()]))
-                .getAsJsonArray(lastArg).toString();
-
-        T[] list = new Gson().fromJson(jsonOb, clazz);
-        return Arrays.asList(list);
+        return parseToArray(json.toString(), clazz, arg);
     }
 
-    /** 把json字符串转为JsonArray对象, 第二个参数按顺序的多层嵌套的json对象头部字符串, 最后一个参数是
+    /** 把json字符串转为List<T>对象, 第二个参数按顺序的多层嵌套的json对象头部字符串, 最后一个参数是
      *  JsonArray的头部字符串
      * @param json
      * @param clazz
@@ -121,7 +113,8 @@ public class JsonParseUtils {
                 .getAsJsonArray(lastArg).toString();
 
         T[] list = new Gson().fromJson(jsonOb, clazz);
-        return Arrays.asList(list);
+
+        return new ArrayList<>(Arrays.asList(list));
     }
 
 }

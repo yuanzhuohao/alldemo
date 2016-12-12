@@ -27,13 +27,13 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
 
     private RecyclerView mRecyclerView;
 
-    public CommonRCLVAdapter(int itemLayoutId, Context context, List<T> data) {
+    public CommonRCLVAdapter(Context context, int itemLayoutId, List<T> data) {
         mItemLayoutId = itemLayoutId;
         mContext = context;
         this.mData = data;
     }
 
-    public CommonRCLVAdapter(RecyclerView recyclerView, int itemLayoutId, Context context, List<T> data) {
+    public CommonRCLVAdapter(RecyclerView recyclerView, Context context, int itemLayoutId,  List<T> data) {
         mItemLayoutId = itemLayoutId;
         mContext = context;
         this.mData = data;
@@ -59,7 +59,7 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
 
     @Override
     public int getItemCount() {
-        return mData.size();
+        return mData == null ? 0 : mData.size();
     }
 
 
@@ -69,9 +69,19 @@ public abstract class CommonRCLVAdapter<T> extends RecyclerView.Adapter<CommonRC
     }
 
     public void addData(List<T> data) {
-        int startIndex = mData.size();
-        this.mData.addAll(data);
-        notifyItemRangeInserted(startIndex, data.size());
+        if (data != null && mData != null) {
+            int startIndex = mData.size();
+            this.mData.addAll(data);
+            notifyItemRangeInserted(startIndex, data.size());
+        }
+    }
+
+    public void clearData() {
+        if (mData != null) {
+            int size = mData.size();
+            mData.clear();
+            notifyItemRangeRemoved(0, size);
+        }
     }
 
     public static class CommonViewHolder extends RecyclerView.ViewHolder {

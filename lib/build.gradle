@@ -5,5 +5,6 @@ dependencies {
 
     compile rootProject.gson
     compile rootProject.reactive.rxjava
-    
+
+    compile 'com.google.guava:guava:20.0'
 }

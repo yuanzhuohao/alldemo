@@ -11,6 +11,12 @@
             android:padding="@dimen/padding_medium">
 
         <Button
+                android:id="@+id/btn_github_api"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Github API"/>
+
+        <Button
                 android:id="@+id/btn_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

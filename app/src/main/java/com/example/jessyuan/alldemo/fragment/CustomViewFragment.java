@@ -33,14 +33,10 @@ public class CustomViewFragment extends BaseNaviFragment {
     CompositeDisposable disposables = new CompositeDisposable();
 
     @Override
-    public void setToolbar(ActionBar toolbar) {
-        toolbar.setTitle("Custom View");
-    }
-
-    @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         setContentView(R.layout.fragment_custom_view);
+        getToolbar().setTitle("CustomView");
     }
 
     @Override

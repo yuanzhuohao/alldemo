@@ -33,11 +33,6 @@ public class LoginFragment extends BaseToolbarFragment {
     EditText passwordEditText;
 
     @Override
-    public void setToolbar(ActionBar toolbar) {
-        toolbar.setTitle("Login");
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }

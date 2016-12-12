@@ -21,7 +21,7 @@ import butterknife.ButterKnife;
  * 继承该类的子类的布局必须导入Toolbar的布局或Toolbar的id为toolbar布局
  */
 
-public abstract class BaseToolbarFragment extends BaseFragment {
+public class BaseToolbarFragment extends BaseFragment {
 
     private ActionBar mToolbar;
     private FrameLayout mContentLayout;
@@ -45,12 +45,6 @@ public abstract class BaseToolbarFragment extends BaseFragment {
     }
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setToolbar(getToolbar());
-    }
-
-    @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
@@ -59,24 +53,36 @@ public abstract class BaseToolbarFragment extends BaseFragment {
         return mToolbar;
     }
 
+
+    /**
+     * Set content view layout in container, it will be called after fragment's layout view has render, so it was called on
+     * 'onViewCreated' method.
+     * @param view
+     */
     public void setContentView(View view) {
         mContentLayout.addView(view);
         ButterKnife.bind(this, view);
     }
 
+    /**
+     * Set content view layout in container, it will be called after fragment's layout view has render, so it was called on
+     * 'onViewCreated' method.
+     * @param layoutResID
+     */
     public void setContentView(int layoutResID) {
         View view = getActivity().getLayoutInflater().inflate(layoutResID, mContentLayout);
         ButterKnife.bind(this, view);
     }
 
+    /**
+     * Set content view layout in container, it will be called after fragment's layout view has render, so it was called on
+     * 'onViewCreated' method.
+     * @param view
+     * @param params
+     */
     public void setContentView(View view, ViewGroup.LayoutParams params) {
         mContentLayout.addView(view, params);
         ButterKnife.bind(this, view);
     }
-
-    /**
-     * 设置Toolbar, 布局要有toolbar
-     */
-    public abstract void setToolbar(ActionBar toolbar);
 
 }

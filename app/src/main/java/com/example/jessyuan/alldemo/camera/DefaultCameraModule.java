@@ -23,6 +23,8 @@ public class DefaultCameraModule implements CameraModule {
     String filePath;
     String fileName;
 
+    public static final int REQUEST_IMAGE_CAPTURE = 0x000001;
+
     @Override
     public Intent getCameraIntent(Context context) {
         Intent intent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);

@@ -1,74 +1,90 @@
-package com.example.jessyuan.alldemo.fragment;
+package com.example.jessyuan.alldemo.album;
 
 import android.Manifest;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
+import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.base.BaseNaviFragment;
 import com.example.jessyuan.alldemo.camera.DefaultCameraModule;
 import com.example.jessyuan.alldemo.camera.ImageCaptureReadyListener;
-import com.example.jessyuan.alldemo.helper.ImageLoader;
-import com.example.jessyuan.alldemo.listeners.ImageLoaderListener;
 import com.example.jessyuan.alldemo.model.Folder;
 import com.example.jessyuan.alldemo.model.Image;
 import com.example.jessyuan.alldemo.ui.GridPlacingDecoration;
-import com.example.mylibrary.LogUtils;
 import com.example.mylibrary.common.CommonRCLVAdapter;
 import com.example.permissionmanager.PermissionListener;
 import com.example.permissionmanager.PermissionManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+
+import static com.example.jessyuan.alldemo.camera.DefaultCameraModule.REQUEST_IMAGE_CAPTURE;
 
 /**
  * Created by JessYuan on 19/10/2016.
  */
 
-public class AlbumFragment extends BaseNaviFragment {
+public class AlbumFragment extends BaseNaviFragment implements AlbumContract.AlbumView {
 
     private static final String TAG = "相册 Fragment";
 
-    private static final int REQUEST_IMAGE_CAPTURE = 0x000001;
-
     @BindView(R.id.rcv_album)
     RecyclerView albumRecyclerView;
-    @BindView(R.id.ll_mainlayout)
-    LinearLayout mainLayout;
 
     CommonRCLVAdapter<Folder> mFolderAdapter;
     CommonRCLVAdapter<Image> mImageAdapter;
 
-    List<Folder> mFolderList = new ArrayList<>();
-    List<Image> mImageList = new ArrayList<>();
-
-    Handler mHandler = new Handler(Looper.getMainLooper());
     DefaultCameraModule mCameraModule = new DefaultCameraModule();
 
     private GridPlacingDecoration mDecoration;
 
+    private AlbumPresenter mPresenter;
+
+    @Nullable
     @Override
-    public void setToolbar(ActionBar toolbar) {
-        toolbar.setTitle("Album");
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(true);
+        return view;
+    }
+
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        setContentView(R.layout.fragment_pick_pictures);
+
+        mPresenter = new AlbumPresenter(getActivity(), this);
+        setupAdapter();
+        PermissionManager.askPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE,
+                "Grant Read external storage can load all images from your device",
+                new PermissionListener() {
+                    @Override
+                    public void onResult(boolean permissionGranted) {
+                        mPresenter.loadDeviceImages();
+                    }
+                });
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        mPresenter.start();
     }
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.toolbar_menu, menu);
+        inflater.inflate(R.menu.menu_camera, menu);
     }
 
     @Override
@@ -82,39 +98,8 @@ public class AlbumFragment extends BaseNaviFragment {
             takePhoto();
             return true;
         } else {
-            loadDeviceImage();
-            setFolderAdapter(mFolderList);
+            mPresenter.loadDeviceImages();
             return true;
-        }
-    }
-
-    @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setContentView(R.layout.fragment_pick_pictures);
-
-        PermissionManager.askPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE,
-                "Grant Read external storage can load all images from your device",
-                new PermissionListener() {
-                    @Override
-                    public void onResult(boolean permissionGranted) {
-                        loadDeviceImage();
-                    }
-                });
-
-        setupAdapter();
-        setFolderAdapter(mFolderList);
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == getActivity().RESULT_OK) {
-            mCameraModule.getImage(getActivity(), data, new ImageCaptureReadyListener() {
-                @Override
-                public void onImageReady(Image image) {
-                    loadDeviceImage();
-                }
-            });
         }
     }
 
@@ -128,38 +113,24 @@ public class AlbumFragment extends BaseNaviFragment {
         }
     }
 
-    /**
-     * Load Device Images from external storage
-     */
-    private void loadDeviceImage() {
-        ImageLoader imageLoader = new ImageLoader(getActivity());
-        imageLoader.loadDeviceImages(new ImageLoaderListener() {
-            @Override
-            public void onImageLoaded(final List<Image> images, final List<Folder> folders) {
-                mHandler.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        mFolderAdapter.setData(folders);
-
-                        mFolderList.clear();
-                        mFolderList.addAll(folders);
-                    }
-                });
-
-            }
-
-            @Override
-            public void onFailed(Exception ex) {
-                LogUtils.e("加载图片失败", ex.getMessage());
-            }
-        });
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE_CAPTURE
+                && resultCode == getActivity().RESULT_OK) {
+            mCameraModule.getImage(getActivity(), data, new ImageCaptureReadyListener() {
+                @Override
+                public void onImageReady(Image image) {
+                    mPresenter.loadDeviceImages();
+                }
+            });
+        }
     }
 
     /**
      * Create FolderAdapter and ImageAdapter
      */
     private void setupAdapter() {
-        mFolderAdapter = new CommonRCLVAdapter<Folder>(R.layout.item_folder, getContext(), mFolderList) {
+        mFolderAdapter = new CommonRCLVAdapter<Folder>(getContext(), R.layout.item_folder, null) {
             @Override
             public void onBindViewHolder(CommonViewHolder holder, int position, final Folder data) {
                 holder.getTextViewById(R.id.tv_item_folder_name).setText(data.getFolderName());
@@ -174,14 +145,13 @@ public class AlbumFragment extends BaseNaviFragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mImageList = data.getImages();
-                        setFolderAdapterOnclick(data, data.getImages());
+                        mPresenter.openFolder(data);
                     }
                 });
             }
         };
 
-        mImageAdapter = new CommonRCLVAdapter<Image>(R.layout.item_image, getContext(), mImageList) {
+        mImageAdapter = new CommonRCLVAdapter<Image>(getContext(), R.layout.item_image, null) {
             @Override
             public void onBindViewHolder(CommonViewHolder holder, final int position, final Image data) {
                 Glide.with(getActivity())
@@ -193,23 +163,11 @@ public class AlbumFragment extends BaseNaviFragment {
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setImageAdapterOnclick(mImageList, position);
+                        mPresenter.openImageViewer(position);
                     }
                 });
             }
         };
-    }
-
-    /**
-     * Set FolderAdapter itemview click listener
-     */
-    private void setFolderAdapterOnclick(Folder folder, List<Image> list) {
-        setImageAdapter(folder, list);
-    }
-
-    private void setImageAdapterOnclick(List<Image> list, int position) {
-        ImageViewerFragment fragment = ImageViewerFragment.newInstance(list, position);
-        fragment.show(getFragmentManager(), "slideshow");
     }
 
     /**
@@ -219,9 +177,7 @@ public class AlbumFragment extends BaseNaviFragment {
         if (mDecoration == null) {
             mDecoration = new GridPlacingDecoration(column,
                     getContext().getResources().getDimensionPixelSize(R.dimen.item_padding), false);
-        }
-
-        if (mDecoration != null) {
+        } else {
             albumRecyclerView.removeItemDecoration(mDecoration);
             mDecoration = new GridPlacingDecoration(column,
                     getContext().getResources().getDimensionPixelSize(R.dimen.item_padding), false);
@@ -232,39 +188,43 @@ public class AlbumFragment extends BaseNaviFragment {
         albumRecyclerView.setAdapter(adapter);
     }
 
-
-    /**
-     * Set Folder Adapter
-     */
-    private void setFolderAdapter(List<Folder> folders) {
-        if (folders != null) {
-            mFolderAdapter.setData(folders);
-        }
-
-        setRecyclerView(2, mFolderAdapter);
-        updateToolbarTitle("Album");
-    }
-
-
-    /**
-     * Set Images Adapter, include setup RecyclerView, update toolbar's title, and toolbar's
-     * navigation click listener
-     */
-    private void setImageAdapter(Folder folder, List<Image> images) {
-        if (images != null) {
-            mImageAdapter.setData(images);
-        }
-
-        setRecyclerView(3, mImageAdapter);
-        updateToolbarTitle(folder.getFolderName());
-    }
-
-
     /**
      * Update toolbar title when change recyclerview adapter
      */
     private void updateToolbarTitle(String title) {
         getToolbar().setTitle(title);
     }
+
+    @Override
+    public void showTitle(String title) {
+        getToolbar().setTitle(title);
+    }
+
+    @Override
+    public void showFolders(List<Folder> list) {
+        if (list != null) {
+            mFolderAdapter.setData(list);
+        }
+
+        setRecyclerView(2, mFolderAdapter);
+        updateToolbarTitle("Album");
+    }
+
+    @Override
+    public void showImages(Folder folder, List<Image> list) {
+        if (list != null) {
+            mImageAdapter.setData(list);
+        }
+
+        setRecyclerView(3, mImageAdapter);
+        updateToolbarTitle(folder.getFolderName());
+    }
+
+    @Override
+    public void showImage(List<Image> list, int position) {
+        ImageViewerFragment fragment = ImageViewerFragment.newInstance(list, position);
+        fragment.show(getFragmentManager(), "slideshow");
+    }
+
 
 }

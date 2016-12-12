@@ -65,25 +65,4 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(android.R.id.content);
-        if (fragment != null) {
-            fragment.onCreateOptionsMenu(menu, getMenuInflater());
-            return true;
-        }
-
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        Fragment fragment = getSupportFragmentManager().findFragmentById(android.R.id.content);
-        if (fragment != null) {
-            fragment.onOptionsItemSelected(item);
-            return true;
-        }
-
-        return super.onOptionsItemSelected(item);
-    }
 }

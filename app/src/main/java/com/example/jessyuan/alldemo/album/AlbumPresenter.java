@@ -1,12 +1,9 @@
 package com.example.jessyuan.alldemo.album;
 
 import android.content.Context;
-import android.content.Intent;
 import android.os.Handler;
 import android.os.Looper;
 
-import com.example.jessyuan.alldemo.camera.CameraModule;
-import com.example.jessyuan.alldemo.camera.DefaultCameraModule;
 import com.example.jessyuan.alldemo.helper.ImageLoader;
 import com.example.jessyuan.alldemo.listeners.ImageLoaderListener;
 import com.example.jessyuan.alldemo.model.Folder;
@@ -28,10 +25,9 @@ public class AlbumPresenter implements AlbumContract.AlbumPresenter {
 
     private AlbumContract.AlbumView mView;
 
-    private DefaultCameraModule mCameraModule = new DefaultCameraModule();
-
     private Context mContext;
 
+    @Inject
     public AlbumPresenter(Context context, AlbumContract.AlbumView view) {
         mContext = context;
         mView = view;

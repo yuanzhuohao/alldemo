@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="search_item">
+        <item>Repository</item>
+        <item>User</item>
+    </string-array>
+
+    <string-array name="user_sorted">
+        <item>default</item>
+        <item>followers</item>
+        <item>repositories</item>
+        <item>joined</item>
+    </string-array>
+
+    <string-array name="repository_sorted">
+        <item>default</item>
+        <item>stars</item>
+        <item>forks</item>
+        <item>updated</item>
+    </string-array>
+</resources>

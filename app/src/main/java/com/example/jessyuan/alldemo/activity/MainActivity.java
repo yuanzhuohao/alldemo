@@ -1,25 +1,15 @@
-package com.example.jessyuan.alldemo;
-
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.crash.FirebaseCrash;
+package com.example.jessyuan.alldemo.activity;
 
 import android.os.Bundle;
-import android.provider.Settings;
-import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.KeyEvent;
-import android.view.Menu;
-import android.view.MenuItem;
 
 import com.example.jessyuan.alldemo.fragment.LoginFragment;
 import com.example.jessyuan.alldemo.fragment.MainFragment;
 import com.example.jessyuan.alldemo.helper.UserManager;
 import com.example.jessyuan.alldemo.interfaces.IFragmentKeyDown;
 import com.example.mylibrary.FragmentUtils;
-import com.example.mylibrary.ToastUtils;
 
 public class MainActivity extends AppCompatActivity {
 

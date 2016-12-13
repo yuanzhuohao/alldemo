@@ -14,6 +14,8 @@ import com.example.mylibrary.LogUtils;
 import java.io.File;
 import java.io.IOException;
 
+import javax.inject.Inject;
+
 /**
  * Created by JessYuan on 30/11/2016.
  */
@@ -22,6 +24,10 @@ public class DefaultCameraModule implements CameraModule {
 
     String filePath;
     String fileName;
+
+    @Inject
+    public DefaultCameraModule() {
+    }
 
     public static final int REQUEST_IMAGE_CAPTURE = 0x000001;
 

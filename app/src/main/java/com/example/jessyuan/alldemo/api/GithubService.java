@@ -2,12 +2,9 @@ package com.example.jessyuan.alldemo.api;
 
 import com.google.gson.JsonObject;
 
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
-import retrofit2.http.QueryMap;
 
 /**
  * Created by JessYuan on 09/12/2016.
@@ -15,10 +12,18 @@ import retrofit2.http.QueryMap;
 
 public interface GithubService {
 
-    public static enum SORT {
-        starts, forks, updated
-    }
+    public static final String GITHUB_API = "https://api.github.com";
 
     @GET("/search/repositories")
-    Call<JsonObject> searchRepositories(@Query("q") String kw, @Query("sort") SORT sort);
+    Call<JsonObject> searchRepositories(@Query("q") String kw);
+
+    @GET("/search/repositories")
+    Call<JsonObject> searchRepositories(@Query("q") String kw, @Query("sort") String sort);
+
+    @GET("/search/users")
+    Call<JsonObject> searchUsers(@Query("q") String username);
+
+    @GET("/search/users")
+    Call<JsonObject> searchUsers(@Query("q") String username, @Query("sort") String sort);
+
 }

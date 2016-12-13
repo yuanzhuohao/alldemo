@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
+import com.example.jessyuan.alldemo.AllDemoApplication;
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.base.BaseNaviFragment;
 import com.example.jessyuan.alldemo.camera.DefaultCameraModule;
@@ -26,6 +27,8 @@ import com.example.permissionmanager.PermissionListener;
 import com.example.permissionmanager.PermissionManager;
 
 import java.util.List;
+
+import javax.inject.Inject;
 
 import butterknife.BindView;
 
@@ -42,20 +45,27 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
     @BindView(R.id.rcv_album)
     RecyclerView albumRecyclerView;
 
+    @Inject
+    AlbumPresenter mPresenter;
+    @Inject
+    DefaultCameraModule mCameraModule;
+
     CommonRCLVAdapter<Folder> mFolderAdapter;
     CommonRCLVAdapter<Image> mImageAdapter;
 
-    DefaultCameraModule mCameraModule = new DefaultCameraModule();
-
     private GridPlacingDecoration mDecoration;
 
-    private AlbumPresenter mPresenter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = super.onCreateView(inflater, container, savedInstanceState);
         setHasOptionsMenu(true);
+
+        DaggerAlbumComponent.builder()
+                .applicationComponent(((AllDemoApplication)getActivity().getApplication()).getApplicationComponent())
+                .albumModule(new AlbumModule(this)).build().inject(this);
+
         return view;
     }
 

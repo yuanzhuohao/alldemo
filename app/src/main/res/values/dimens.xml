@@ -15,9 +15,17 @@
     <dimen name="margin_medium">10dp</dimen>
     <dimen name="margin_large">15dp</dimen>
 
+    <!--height-->
     <dimen name="height_normal">40dp</dimen>
     <dimen name="height_medium">50dp</dimen>
     <dimen name="height_high">60dp</dimen>
 
+    <!--width-->
+    <dimen name="width_normal">40dp</dimen>
+    <dimen name="width_medium">50dp</dimen>
+    <dimen name="width_high">60dp</dimen>
+
     <dimen name="item_padding">1dp</dimen>
+
+    <dimen name="divider_height">5dp</dimen>
 </resources>

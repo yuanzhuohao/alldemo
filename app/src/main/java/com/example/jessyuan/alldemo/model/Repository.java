@@ -11,7 +11,7 @@ public class Repository {
      * id : 3081286
      * name : Tetris
      * full_name : dtrupenn/Tetris
-     * owner : {"login":"dtrupenn","id":872147,"avatar_url":"https://secure.gravatar.com/avatar/e7956084e75f239de85d3a31bc172ace?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png","gravatar_id":"","url":"https://api.github.com/users/dtrupenn","received_events_url":"https://api.github.com/users/dtrupenn/received_events","type":"User"}
+     * mUser : {"login":"dtrupenn","id":872147,"avatar_url":"https://secure.gravatar.com/avatar/e7956084e75f239de85d3a31bc172ace?d=https://a248.e.akamai.net/assets.github.com%2Fimages%2Fgravatars%2Fgravatar-user-420.png","gravatar_id":"","url":"https://api.github.com/users/dtrupenn","received_events_url":"https://api.github.com/users/dtrupenn/received_events","type":"User"}
      * private : false
      * html_url : https://github.com/dtrupenn/Tetris
      * description : A C implementation of Tetris using Pennsim through LC4
@@ -35,7 +35,8 @@ public class Repository {
     private int id;
     private String name;
     private String full_name;
-    private Owner owner;
+    @SerializedName("owner")
+    private User mUser;
     @SerializedName("private")
     private boolean privateX;
     private String html_url;
@@ -80,12 +81,12 @@ public class Repository {
         this.full_name = full_name;
     }
 
-    public Owner getOwner() {
-        return owner;
+    public User getUser() {
+        return mUser;
     }
 
-    public void setOwner(Owner owner) {
-        this.owner = owner;
+    public void setUser(User user) {
+        this.mUser = user;
     }
 
     public boolean isPrivateX() {

@@ -39,7 +39,7 @@ ext {
     support = [
             appcompat_v7 : "com.android.support:appcompat-v7:${supportLibrary}",
             design : "com.android.support:design:${supportLibrary}",
-            recyclerview : "com.android.support:recyclerview-v7:24.2.1"
+            recyclerview : "com.android.support:recyclerview-v7:25.0.1"
     ]
 
     retrofit = [

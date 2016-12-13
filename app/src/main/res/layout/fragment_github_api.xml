@@ -4,10 +4,37 @@
               android:layout_width="match_parent"
               android:layout_height="match_parent">
 
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/height_normal"
+            android:orientation="horizontal">
+
+
+        <android.support.v7.widget.SearchView
+                android:id="@+id/sv_github_search"
+                android:layout_width="0dp"
+                android:layout_weight="5"
+                android:layout_height="match_parent"/>
+
+        <Spinner
+                android:id="@+id/spr_github_search"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"></Spinner>
+
+        <Spinner
+                android:id="@+id/spr_github_sorted"
+                android:layout_width="0dp"
+                android:layout_weight="2"
+                android:layout_height="match_parent"></Spinner>
+
+    </LinearLayout>
+
     <android.support.v7.widget.RecyclerView
             android:id="@+id/rcv_repository"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_medium">
 
     </android.support.v7.widget.RecyclerView>
 

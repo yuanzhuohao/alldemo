@@ -4,7 +4,7 @@ package com.example.jessyuan.alldemo.model;
  * Created by JessYuan on 09/12/2016.
  */
 
-public class Owner {
+public class User {
     /**
      * login : dtrupenn
      * id : 872147

@@ -8,10 +8,17 @@ import android.app.Application;
 
 public class AllDemoApplication extends Application {
 
+    private ApplicationComponent mApplicationComponent;
+
     @Override
     public void onCreate() {
         super.onCreate();
-        AllDemoApplicationContext.sApplication = this;
-        AllDemoApplicationContext.sContext = this.getApplicationContext();
+
+        mApplicationComponent = DaggerApplicationComponent.builder()
+                .applicationModule(new ApplicationModule(getApplicationContext())).build();
+    }
+
+    public ApplicationComponent getApplicationComponent() {
+        return mApplicationComponent;
     }
 }

@@ -15,11 +15,16 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.bumptech.glide.Glide;
-import com.example.jessyuan.alldemo.AllDemoApplication;
 import com.example.jessyuan.alldemo.R;
+import com.example.jessyuan.alldemo.api.GithubService;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
+import com.example.jessyuan.alldemo.component.DaggerNetworkComponent;
+import com.example.jessyuan.alldemo.component.NetworkComponent;
 import com.example.jessyuan.alldemo.model.Repository;
 import com.example.jessyuan.alldemo.model.User;
+import com.example.jessyuan.alldemo.module.ApplicationModule;
+import com.example.jessyuan.alldemo.module.GithubServiceModule;
+import com.example.jessyuan.alldemo.module.NetworkModule;
 import com.example.jessyuan.alldemo.ui.VerticalItemDecoration;
 import com.example.mylibrary.common.CommonRCLVAdapter;
 
@@ -74,9 +79,16 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
         super.onViewCreated(view, savedInstanceState);
         setContentView(R.layout.fragment_github_api);
 
+        NetworkComponent networkComponent = DaggerNetworkComponent.builder()
+                .networkModule(new NetworkModule(GithubService.GITHUB_API))
+                .applicationModule(new ApplicationModule(getActivity().getApplication()))
+                .build();
+
         DaggerGithubComponent.builder()
-                .applicationComponent(((AllDemoApplication)getActivity().getApplication()).getApplicationComponent())
-                .githubModule(new GithubModule(this)).build().inject(this);
+                .networkComponent(networkComponent)
+                .githubModule(new GithubModule(this))
+                .build()
+                .inject(this);
 
         // initial layout view
         init();

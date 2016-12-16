@@ -11,11 +11,14 @@ import com.example.jessyuan.alldemo.model.Image;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import javax.inject.Inject;
 
 /**
  * Created by JessYuan on 25/11/2016.
@@ -33,12 +36,31 @@ public class ImageLoader {
     private Context mContext;
     private ExecutorService mExecutorService;
 
+    private Map<String, Folder> mCacheFolders;
+
+    private boolean mCacheDirty = false;
+
+    @Inject
     public ImageLoader(Context context) {
         mContext = context;
     }
 
     public void loadDeviceImages(ImageLoaderListener listener) {
+        if (mCacheDirty && mCacheFolders != null) {
+            ArrayList<Image> images = new ArrayList<>();
+            for (Folder folder : mCacheFolders.values()) {
+                images.addAll(folder.getImages());
+            }
+            listener.onImageLoaded(images, new ArrayList<Folder>(mCacheFolders.values()));
+        }
+
         getExecutorService().execute(new ImageLoadRunnable(listener));
+    }
+
+    public void refreshDeviceImages(ImageLoaderListener listener) {
+        mCacheDirty = false;
+        mCacheFolders.clear();
+        loadDeviceImages(listener);
     }
 
     public void abortLoadImages() {
@@ -75,7 +97,11 @@ public class ImageLoader {
             }
 
             List<Image> temp = new ArrayList<>(cursor.getCount());
-            Map<String, Folder> folderMap = new HashMap<>();
+
+            mCacheDirty = true;
+            if (mCacheFolders == null) {
+                mCacheFolders = new LinkedHashMap<>();
+            }
 
             if (cursor.moveToLast()) {
                 do {
@@ -90,10 +116,10 @@ public class ImageLoader {
                         temp.add(image);
 
 
-                        Folder folder = folderMap.get(bucket);
+                        Folder folder = mCacheFolders.get(bucket);
                         if (folder == null) {
                             folder = new Folder(bucket);
-                            folderMap.put(bucket, folder);
+                            mCacheFolders.put(bucket, folder);
                         }
 
                         folder.getImages().add(image);
@@ -103,7 +129,7 @@ public class ImageLoader {
 
             cursor.close();
 
-            List<Folder> folders = new ArrayList<>(folderMap.values());
+            List<Folder> folders = new ArrayList<>(mCacheFolders.values());
 
             mListener.onImageLoaded(temp, folders);
         }

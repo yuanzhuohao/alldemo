@@ -14,7 +14,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.bumptech.glide.Glide;
-import com.example.jessyuan.alldemo.AllDemoApplication;
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.base.BaseNaviFragment;
 import com.example.jessyuan.alldemo.camera.DefaultCameraModule;
@@ -63,8 +62,7 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
         setHasOptionsMenu(true);
 
         DaggerAlbumComponent.builder()
-                .applicationComponent(((AllDemoApplication)getActivity().getApplication()).getApplicationComponent())
-                .albumModule(new AlbumModule(this)).build().inject(this);
+                .albumModule(new AlbumModule(getActivity(),this)).build().inject(this);
 
         return view;
     }
@@ -74,14 +72,13 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
         super.onViewCreated(view, savedInstanceState);
         setContentView(R.layout.fragment_pick_pictures);
 
-        mPresenter = new AlbumPresenter(getActivity(), this);
         setupAdapter();
         PermissionManager.askPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE,
                 "Grant Read external storage can load all images from your device",
                 new PermissionListener() {
                     @Override
                     public void onResult(boolean permissionGranted) {
-                        mPresenter.loadDeviceImages();
+                        mPresenter.loadDeviceImages(false);
                     }
                 });
     }
@@ -108,7 +105,7 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
             takePhoto();
             return true;
         } else {
-            mPresenter.loadDeviceImages();
+            mPresenter.loadDeviceImages(false);
             return true;
         }
     }
@@ -130,7 +127,7 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
             mCameraModule.getImage(getActivity(), data, new ImageCaptureReadyListener() {
                 @Override
                 public void onImageReady(Image image) {
-                    mPresenter.loadDeviceImages();
+                    mPresenter.loadDeviceImages(true);
                 }
             });
         }

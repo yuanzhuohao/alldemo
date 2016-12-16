@@ -13,6 +13,7 @@ import com.example.mylibrary.LogUtils;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Named;
 
 /**
  * Created by JessYuan on 12/12/2016.
@@ -25,11 +26,11 @@ public class AlbumPresenter implements AlbumContract.AlbumPresenter {
 
     private AlbumContract.AlbumView mView;
 
-    private Context mContext;
+    @Inject
+    ImageLoader mImageLoader;
 
     @Inject
-    public AlbumPresenter(Context context, AlbumContract.AlbumView view) {
-        mContext = context;
+    public AlbumPresenter(AlbumContract.AlbumView view) {
         mView = view;
     }
 
@@ -37,10 +38,9 @@ public class AlbumPresenter implements AlbumContract.AlbumPresenter {
      * Load Device Images from external storage
      */
     @Override
-    public void loadDeviceImages() {
-        ImageLoader imageLoader = new ImageLoader(mContext);
+    public void loadDeviceImages(boolean refresh) {
         final Handler handler = new Handler(Looper.getMainLooper());
-        imageLoader.loadDeviceImages(new ImageLoaderListener() {
+        ImageLoaderListener listener = new ImageLoaderListener() {
             @Override
             public void onImageLoaded(final List<Image> images, final List<Folder> folders) {
                 handler.post(new Runnable() {
@@ -55,9 +55,15 @@ public class AlbumPresenter implements AlbumContract.AlbumPresenter {
 
             @Override
             public void onFailed(Exception ex) {
-                LogUtils.e("加载图片失败", ex.getMessage());
+                LogUtils.e("load images failure", ex.getMessage());
             }
-        });
+        };
+
+        if (refresh) {
+            mImageLoader.refreshDeviceImages(listener);
+        } else {
+            mImageLoader.loadDeviceImages(listener);
+        }
     }
 
     @Override

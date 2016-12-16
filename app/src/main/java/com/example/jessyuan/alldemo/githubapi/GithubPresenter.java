@@ -2,13 +2,11 @@ package com.example.jessyuan.alldemo.githubapi;
 
 import com.google.gson.JsonObject;
 
-import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.text.TextUtils;
 
 import com.example.jessyuan.alldemo.api.GithubService;
-import com.example.jessyuan.alldemo.api.ServiceGenerator;
 import com.example.jessyuan.alldemo.model.Repository;
 import com.example.jessyuan.alldemo.model.User;
 import com.example.mylibrary.JsonParseUtils;
@@ -21,6 +19,7 @@ import javax.inject.Inject;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import retrofit2.Retrofit;
 
 /**
  * Created by JessYuan on 12/12/2016.
@@ -31,24 +30,19 @@ public class GithubPresenter implements GithubContract.GithubPresenter {
     private static final String TAG = "GithubPresenter";
 
     GithubContract.GithubView mView;
-    private Context mContext;
 
-    private GithubService mGithubService;
     private List<Repository> mRepositoryList = new ArrayList<>();
     private List<User> mUserList = new ArrayList<>();
-
     private Runnable mRunnable;
+
     private Handler mHandler = new Handler(Looper.getMainLooper());
 
     @Inject
-    public GithubPresenter(Context context, GithubContract.GithubView view) {
-        mContext = context;
-        mView = view;
-    }
+    GithubService mGithubService;
 
     @Inject
-    void setGithubService() {
-        mGithubService = new ServiceGenerator.Builder().addBaseUrl(GithubService.GITHUB_API).build().createService(GithubService.class);
+    public GithubPresenter(GithubContract.GithubView view) {
+        mView = view;
     }
 
     @Override

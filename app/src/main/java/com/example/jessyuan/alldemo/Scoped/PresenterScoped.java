@@ -1,18 +1,17 @@
-package com.example.jessyuan.alldemo.helper;
+package com.example.jessyuan.alldemo.Scoped;
 
 import java.lang.annotation.Documented;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.security.Policy;
 
 import javax.inject.Scope;
 
 /**
- * Created by JessYuan on 13/12/2016.
+ * Created by JessYuan on 14/12/2016.
  */
 
 @Documented
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface FragmentScoped {
+public @interface PresenterScoped {
 }

@@ -1,5 +1,9 @@
 package com.example.jessyuan.alldemo.githubapi;
 
+import com.example.jessyuan.alldemo.Scoped.GithubScoped;
+
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -17,7 +21,9 @@ public class GithubModule {
     }
 
     @Provides
+    @GithubScoped
     GithubContract.GithubView provideView() {
         return mView;
     }
+
 }

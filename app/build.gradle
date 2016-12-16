@@ -56,11 +56,15 @@ dependencies {
 
     // dagger
     compile rootProject.dagger.main
-    provided rootProject.dagger.compiler
+    apt rootProject.dagger.apt
+    provided rootProject.dagger.provided
 
     // retrofit
     compile rootProject.retrofit.retrofit
     compile rootProject.retrofit.converter_gson
+    compile rootProject.okhttp
+
+    compile rootProject.guava
 
     compile 'com.google.firebase:firebase-crash:9.6.1'
 

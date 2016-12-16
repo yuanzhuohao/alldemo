@@ -20,7 +20,7 @@ public interface AlbumContract {
     }
 
     interface AlbumPresenter extends BasePresenter{
-        void loadDeviceImages();
+        void loadDeviceImages(boolean refresh);
         void openFolder(Folder folder);
         void openImageViewer(int position);
     }

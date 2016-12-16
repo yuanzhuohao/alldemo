@@ -28,13 +28,15 @@ task clean(type: Delete) {
 
 ext {
     supportLibrary = "25.0.0"
-    dagger_version = "2.4"
+    dagger_version = "2.7"
     retrofit_version = "2.1.0"
     rxjava_version = "2.0.1"
     rxandroid_version = "2.0.1"
     gson_version = "2.6.2"
     glide_version = "3.7.0"
     butterknife_version = "8.4.0"
+    guava_version = "20.0"
+    okhttp_version = "3.5.0"
 
     support = [
             appcompat_v7 : "com.android.support:appcompat-v7:${supportLibrary}",
@@ -55,7 +57,8 @@ ext {
 
     dagger = [
             main : "com.google.dagger:dagger:${dagger_version}",
-            compiler : "com.google.dagger:dagger-compiler:${dagger_version}"
+            apt : "com.google.dagger:dagger-compiler:${dagger_version}",
+            provided : "javax.annotation:jsr250-api:1.0"
     ]
 
     butterknife = [
@@ -65,4 +68,8 @@ ext {
 
     gson = "com.google.code.gson:gson:${gson_version}"
     glide = "com.github.bumptech.glide:glide:${glide_version}"
+
+    guava = "com.google.guava:guava:${guava_version}"
+
+    okhttp = "com.squareup.okhttp3:okhttp:${okhttp_version}"
 }

@@ -1,7 +1,9 @@
 package com.example.jessyuan.alldemo.album;
 
-import com.example.jessyuan.alldemo.ApplicationComponent;
-import com.example.jessyuan.alldemo.helper.FragmentScoped;
+import com.example.jessyuan.alldemo.Scoped.AlbumScoped;
+import com.example.jessyuan.alldemo.module.ImageLoaderModule;
+
+import javax.inject.Singleton;
 
 import dagger.Component;
 
@@ -9,8 +11,8 @@ import dagger.Component;
  * Created by JessYuan on 13/12/2016.
  */
 
-@FragmentScoped
-@Component(dependencies = ApplicationComponent.class, modules = AlbumModule.class)
+@Singleton
+@Component(modules = {AlbumModule.class, ImageLoaderModule.class})
 public interface AlbumComponent {
     void inject(AlbumFragment fragment);
 }

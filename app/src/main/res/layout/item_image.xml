@@ -12,4 +12,18 @@
             android:background="@drawable/image_placeholder"
             android:scaleType="centerCrop"/>
 
+    <ImageView
+            android:id="@+id/iv_item_image_mask"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="#33ffffff"/>
+
+    <ImageView
+            android:id="@+id/iv_item_image_selected"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center"
+            android:background="@drawable/ic_done_white_24dp"/>
+
 </com.example.jessyuan.alldemo.ui.SquareFrameLayout>

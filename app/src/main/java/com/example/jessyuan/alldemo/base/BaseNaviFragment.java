@@ -18,8 +18,8 @@ public abstract class BaseNaviFragment extends BaseToolbarFragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        getToolbar().setDisplayHomeAsUpEnabled(true);
-        getToolbar().setHomeAsUpIndicator(R.drawable.ic_navigate_before_white_36dp);
+        getActionBar().setDisplayHomeAsUpEnabled(true);
+        getActionBar().setHomeAsUpIndicator(R.drawable.ic_navigate_before_white_36dp);
     }
 
     @Override

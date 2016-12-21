@@ -28,4 +28,6 @@
     <dimen name="item_padding">1dp</dimen>
 
     <dimen name="divider_height">5dp</dimen>
+
+    <dimen name="progressbar_horizontal_height">2dp</dimen>
 </resources>

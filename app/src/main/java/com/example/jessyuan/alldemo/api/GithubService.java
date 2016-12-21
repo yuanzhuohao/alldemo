@@ -2,6 +2,8 @@ package com.example.jessyuan.alldemo.api;
 
 import com.google.gson.JsonObject;
 
+import io.reactivex.Observable;
+import okhttp3.Response;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
@@ -15,15 +17,15 @@ public interface GithubService {
     public static final String GITHUB_API = "https://api.github.com";
 
     @GET("/search/repositories")
-    Call<JsonObject> searchRepositories(@Query("q") String kw);
+    Observable<JsonObject> searchRepositories(@Query("q") String kw);
 
     @GET("/search/repositories")
-    Call<JsonObject> searchRepositories(@Query("q") String kw, @Query("sort") String sort);
+    Observable<JsonObject> searchRepositories(@Query("q") String kw, @Query("sort") String sort);
 
     @GET("/search/users")
-    Call<JsonObject> searchUsers(@Query("q") String username);
+    Observable<JsonObject> searchUsers(@Query("q") String username);
 
     @GET("/search/users")
-    Call<JsonObject> searchUsers(@Query("q") String username, @Query("sort") String sort);
+    Observable<JsonObject> searchUsers(@Query("q") String username, @Query("sort") String sort);
 
 }

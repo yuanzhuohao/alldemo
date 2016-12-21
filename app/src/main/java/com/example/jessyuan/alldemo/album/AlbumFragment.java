@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
 import com.example.jessyuan.alldemo.R;
@@ -21,6 +22,7 @@ import com.example.jessyuan.alldemo.camera.ImageCaptureReadyListener;
 import com.example.jessyuan.alldemo.model.Folder;
 import com.example.jessyuan.alldemo.model.Image;
 import com.example.jessyuan.alldemo.ui.GridPlacingDecoration;
+import com.example.mylibrary.ToastUtils;
 import com.example.mylibrary.common.CommonRCLVAdapter;
 import com.example.permissionmanager.PermissionListener;
 import com.example.permissionmanager.PermissionManager;
@@ -100,6 +102,7 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
 
         if (id == android.R.id.home && getToolbar().getTitle().equals("Album")) {
             getFragmentManager().popBackStack();
+            removeMenuItem();
             return true;
         } else if (id == R.id.item_toolbar_camera) {
             takePhoto();
@@ -167,10 +170,33 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
                         .error(R.drawable.image_placeholder)
                         .into(holder.getImageViewById(R.id.iv_item_image));
 
+                ImageView imageMask = holder.getImageViewById(R.id.iv_item_image_mask);
+                ImageView selectedView = holder.getImageViewById(R.id.iv_item_image_selected);
+
+                imageMask.setVisibility(mPresenter.isEdit() ? View.VISIBLE : View.GONE);
+                selectedView.setVisibility((mPresenter.isEdit() && data.isSelected()) ?
+                        View.VISIBLE : View.GONE);
+
+                // short click
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.openImageViewer(position);
+                        if (mPresenter.isEdit()) {
+                            mPresenter.selectImage(position);
+                        } else {
+                            mPresenter.openImageViewer(position);
+                        }
+                    }
+                });
+
+                // long click to image
+                holder.itemView.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View v) {
+                        addMenuItem();
+                        mPresenter.setEdit(true);
+                        mPresenter.selectImage(position);
+                        return true;
                     }
                 });
             }
@@ -200,6 +226,36 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
      */
     private void updateToolbarTitle(String title) {
         getToolbar().setTitle(title);
+    }
+
+    private void addMenuItem() {
+        getToolbar().getMenu().add(Menu.NONE, R.id.menu_item_delete, Menu.NONE, "delete").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+        getToolbar().getMenu().add(Menu.NONE, R.id.menu_item_cancel, Menu.NONE, "cancel").setShowAsAction(MenuItem.SHOW_AS_ACTION_ALWAYS);
+
+        getToolbar().getMenu().findItem(R.id.menu_item_delete).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                removeMenuItem();
+                mPresenter.setEdit(false);
+                mPresenter.deleteSelectedImage();
+                return true;
+            }
+        });
+
+        getToolbar().getMenu().findItem(R.id.menu_item_cancel).setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
+            @Override
+            public boolean onMenuItemClick(MenuItem item) {
+                ToastUtils.makeTextShort(getContext(), "cancel");
+                removeMenuItem();
+                mPresenter.setEdit(false);
+                return true;
+            }
+        });
+    }
+
+    private void removeMenuItem() {
+        getToolbar().getMenu().removeItem(R.id.menu_item_delete);
+        getToolbar().getMenu().removeItem(R.id.menu_item_cancel);
     }
 
     @Override
@@ -233,5 +289,15 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
         fragment.show(getFragmentManager(), "slideshow");
     }
 
+    @Override
+    public void showChangeImage(int position) {
+        if (position >= 0 && position < mImageAdapter.getItemCount()) {
+            mImageAdapter.notifyItemChanged(position);
+        }
+    }
 
+    @Override
+    public void showImageEditOrNormalMode() {
+        mImageAdapter.notifyDataSetChanged();
+    }
 }

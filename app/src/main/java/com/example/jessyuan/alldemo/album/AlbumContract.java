@@ -16,12 +16,17 @@ public interface AlbumContract {
         void showTitle(String title);
         void showFolders(List<Folder> list);
         void showImages(Folder folder, List<Image> list);
+        // open image on imageviewer
         void showImage(List<Image> list, int position);
+        void showChangeImage(int position);
+        void showImageEditOrNormalMode();
     }
 
     interface AlbumPresenter extends BasePresenter{
         void loadDeviceImages(boolean refresh);
         void openFolder(Folder folder);
         void openImageViewer(int position);
+        void selectImage(int position);
+        void deleteSelectedImage();
     }
 }

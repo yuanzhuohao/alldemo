@@ -1,5 +1,8 @@
 package com.example.jessyuan.alldemo.githubapi;
 
+import android.os.Handler;
+import android.os.Looper;
+
 import com.example.jessyuan.alldemo.Scoped.GithubScoped;
 
 import javax.inject.Singleton;
@@ -24,6 +27,12 @@ public class GithubModule {
     @GithubScoped
     GithubContract.GithubView provideView() {
         return mView;
+    }
+
+    @Provides
+    @GithubScoped
+    Handler provideHandler() {
+        return new Handler(Looper.getMainLooper());
     }
 
 }

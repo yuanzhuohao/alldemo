@@ -20,6 +20,15 @@ import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
+import io.reactivex.ObservableEmitter;
+import io.reactivex.ObservableOnSubscribe;
+import io.reactivex.Observer;
+import io.reactivex.Single;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
+
 /**
  * Created by JessYuan on 25/11/2016.
  */
@@ -34,7 +43,6 @@ public class ImageLoader {
     };
 
     private Context mContext;
-    private ExecutorService mExecutorService;
 
     private Map<String, Folder> mCacheFolders;
 
@@ -45,93 +53,91 @@ public class ImageLoader {
         mContext = context;
     }
 
-    public void loadDeviceImages(ImageLoaderListener listener) {
-        if (mCacheDirty && mCacheFolders != null) {
-            ArrayList<Image> images = new ArrayList<>();
-            for (Folder folder : mCacheFolders.values()) {
-                images.addAll(folder.getImages());
-            }
-            listener.onImageLoaded(images, new ArrayList<Folder>(mCacheFolders.values()));
-        }
-
-        getExecutorService().execute(new ImageLoadRunnable(listener));
+    public Single<List<Folder>> loadImages() {
+        return Observable.concat(loadCacheImages(), loadDeviceImages())
+                .first(new ArrayList<Folder>());
     }
 
-    public void refreshDeviceImages(ImageLoaderListener listener) {
+    /**
+     * clear cache, and load device images
+     * @return
+     */
+    public Single<List<Folder>> refreshImages() {
         mCacheDirty = false;
         mCacheFolders.clear();
-        loadDeviceImages(listener);
+        return loadImages();
     }
 
-    public void abortLoadImages() {
-        if (mExecutorService != null) {
-            getExecutorService().shutdown();
-            mExecutorService = null;
-        }
-    }
-
-    private ExecutorService getExecutorService() {
-        if (mExecutorService == null) {
-            mExecutorService = Executors.newSingleThreadExecutor();
-        }
-
-        return mExecutorService;
-    }
-
-    private class ImageLoadRunnable implements Runnable {
-
-        private ImageLoaderListener mListener;
-
-        public ImageLoadRunnable(ImageLoaderListener listener) {
-            mListener = listener;
-        }
-
-        @Override
-        public void run() {
-            Cursor cursor = mContext.getContentResolver().query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    columnIndexs, null, null, MediaStore.Images.Media.DATE_ADDED);
-
-            if (cursor == null) {
-                mListener.onFailed(new NullPointerException());
+    /**
+     * load memory cache images
+     * @return
+     */
+    private Observable<List<Folder>> loadCacheImages() {
+        return Observable.create(new ObservableOnSubscribe<List<Folder>>() {
+            @Override
+            public void subscribe(ObservableEmitter<List<Folder>> e) throws Exception {
+                if (mCacheDirty && mCacheFolders != null && mCacheFolders.size() != 0) {
+                    e.onNext(new ArrayList<Folder>(mCacheFolders.values()));
+                } else {
+                    e.onComplete();
+                }
             }
+        });
+    }
 
-            List<Image> temp = new ArrayList<>(cursor.getCount());
+    /**
+     * load device images
+     * @return
+     */
+    private Observable<List<Folder>> loadDeviceImages() {
+        return new Observable<List<Folder>>() {
+            @Override
+            protected void subscribeActual(Observer<? super List<Folder>> observer) {
+                Cursor cursor = mContext.getContentResolver().query(
+                        MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                        columnIndexs, null, null, MediaStore.Images.Media.DATE_ADDED);
 
-            mCacheDirty = true;
-            if (mCacheFolders == null) {
-                mCacheFolders = new LinkedHashMap<>();
-            }
+                if (cursor == null) {
+                    observer.onError(new NullPointerException());
+                }
 
-            if (cursor.moveToLast()) {
-                do {
-                    long id = cursor.getLong(cursor.getColumnIndex(columnIndexs[0]));
-                    String name = cursor.getString(cursor.getColumnIndex(columnIndexs[1]));
-                    String path = cursor.getString(cursor.getColumnIndex(columnIndexs[2]));
-                    String bucket = cursor.getString(cursor.getColumnIndex(columnIndexs[3]));
+                List<Image> temp = new ArrayList<>(cursor.getCount());
 
-                    File file = new File(path);
-                    if (file.exists()) {
-                        Image image = new Image(id, name, path, false);
-                        temp.add(image);
+                mCacheDirty = true;
+                if (mCacheFolders == null) {
+                    mCacheFolders = new LinkedHashMap<>();
+                }
+
+                if (cursor.moveToLast()) {
+                    do {
+                        long id = cursor.getLong(cursor.getColumnIndex(columnIndexs[0]));
+                        String name = cursor.getString(cursor.getColumnIndex(columnIndexs[1]));
+                        String path = cursor.getString(cursor.getColumnIndex(columnIndexs[2]));
+                        String bucket = cursor.getString(cursor.getColumnIndex(columnIndexs[3]));
+
+                        File file = new File(path);
+                        if (file.exists()) {
+                            Image image = new Image(id, name, path, false);
+                            temp.add(image);
 
 
-                        Folder folder = mCacheFolders.get(bucket);
-                        if (folder == null) {
-                            folder = new Folder(bucket);
-                            mCacheFolders.put(bucket, folder);
+                            Folder folder = mCacheFolders.get(bucket);
+                            if (folder == null) {
+                                folder = new Folder(bucket);
+                                mCacheFolders.put(bucket, folder);
+                            }
+
+                            folder.getImages().add(image);
                         }
+                    } while (cursor.moveToPrevious());
+                }
 
-                        folder.getImages().add(image);
-                    }
-                } while (cursor.moveToPrevious());
+                cursor.close();
+
+                List<Folder> folders = new ArrayList<>(mCacheFolders.values());
+
+                observer.onNext(folders);
             }
-
-            cursor.close();
-
-            List<Folder> folders = new ArrayList<>(mCacheFolders.values());
-
-            mListener.onImageLoaded(temp, folders);
-        }
+        };
     }
 }

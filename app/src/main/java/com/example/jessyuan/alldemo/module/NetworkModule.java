@@ -6,6 +6,9 @@ import com.google.gson.GsonBuilder;
 
 import android.app.Application;
 
+import com.example.jessyuan.alldemo.BuildConfig;
+import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
+
 import javax.inject.Singleton;
 
 import dagger.Module;
@@ -38,6 +41,7 @@ public class NetworkModule {
     @Singleton
     OkHttpClient provideOkhttpClient(Cache cache) {
         OkHttpClient.Builder builder = new OkHttpClient.Builder().cache(cache);
+
         return builder.build();
     }
 
@@ -55,6 +59,7 @@ public class NetworkModule {
         Retrofit.Builder builder = new Retrofit.Builder()
                 .baseUrl(mBaseUrl)
                 .addConverterFactory(GsonConverterFactory.create(gson))
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .client(client);
 
         return builder.build();

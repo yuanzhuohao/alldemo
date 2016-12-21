@@ -25,14 +25,14 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
 
-    compile rootProject.support.appcompat_v7
-    compile rootProject.support.design
-    compile rootProject.support.recyclerview
+    compile support.appcompat_v7
+    compile support.design
+    compile support.recyclerview
 
-    compile rootProject.reactive.rxjava
-    compile rootProject.reactive.rxandroid
-    compile rootProject.retrofit.retrofit
-    compile rootProject.retrofit.converter_gson
-    compile rootProject.gson
+    compile reactive.rxjava
+    compile reactive.rxandroid
+    compile retrofit.retrofit
+    compile retrofit.converter_gson
+    compile gson
 
 }

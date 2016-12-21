@@ -15,18 +15,30 @@ android {
 
         multiDexEnabled true
 
+        setProperty("archivesBaseName", "AllDemo-$versionName")
     }
 
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+
+//            applicationVariants.all { variant ->
+//                variant.outputs.each { output ->
+//                    def date = new Date();
+//                    def formattedDate = date.format('yyyyMMddHHmmss')
+//                    output.outputFile = new File(output.outputFile.parent,
+//                            output.outputFile.name.replace(".apk", "-" + formattedDate+".apk")
+//                    )
+//                }
+//            }
         }
 
         debug {
             debuggable true
             minifyEnabled false
         }
+
     }
 
     sourceSets {
@@ -44,30 +56,33 @@ dependencies {
     compile project(':mylibrary')
     compile project(':permissionmanager')
 
-    compile rootProject.support.appcompat_v7
-    compile rootProject.support.design
-    compile rootProject.support.recyclerview
+    compile support.appcompat_v7
+    compile support.design
+    compile support.recyclerview
 
     // butterknife
-    compile rootProject.butterknife.main
-    apt rootProject.butterknife.compiler
+    compile butterknife.main
+    apt butterknife.compiler
 
-    compile rootProject.glide
+    compile glide
 
     // dagger
-    compile rootProject.dagger.main
-    apt rootProject.dagger.apt
-    provided rootProject.dagger.provided
+    compile dagger.main
+    apt dagger.apt
+    provided dagger.provided
 
-    // retrofit
-    compile rootProject.retrofit.retrofit
-    compile rootProject.retrofit.converter_gson
-    compile rootProject.okhttp
+    // network
+    compile retrofit.retrofit
+    compile retrofit.converter_gson
+    compile retrofit.adapter_rxjava
+    compile okhttp
 
-    compile rootProject.guava
+    // Reactive
+    compile reactive.rxjava
+    compile reactive.rxandroid
+
+    compile guava
 
     compile 'com.google.firebase:firebase-crash:9.6.1'
-
     compile 'com.google.firebase:firebase-auth:9.6.1'
-
 }

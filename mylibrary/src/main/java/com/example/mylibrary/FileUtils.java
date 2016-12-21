@@ -18,7 +18,7 @@ public class FileUtils {
     private static final String TAG = "文件工具类 FileUtils";
 
     /**
-     *  该方法创建图片文件，并把它保存在App的包名路径目录的Pictures目录下。
+     *  该方法创建图片文件，并把它保存在根目录的Pictures目录下。
      * @param directory
      * @return
      * @throws IOException

@@ -1,5 +1,8 @@
 package com.example.jessyuan.alldemo.githubapi;
 
+import android.app.Activity;
+import android.content.Context;
+
 import com.example.jessyuan.alldemo.api.GithubService;
 import com.example.jessyuan.alldemo.base.BasePresenter;
 import com.example.jessyuan.alldemo.base.BaseView;
@@ -24,6 +27,7 @@ public interface GithubContract {
         void searchRepository(String text, String sorted);
         void searchUser(String text);
         void searchUser(String text, String sorted);
-        void openRepository(Repository rep);
+        void openRepository(Repository rep, Activity activity);
+        void openUser(User user, Activity activity);
     }
 }

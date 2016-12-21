@@ -2,6 +2,7 @@ package com.example.jessyuan.alldemo.githubapi;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -29,10 +30,14 @@ import com.example.jessyuan.alldemo.ui.VerticalItemDecoration;
 import com.example.mylibrary.common.CommonRCLVAdapter;
 
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.functions.Consumer;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 /**
  * Created by JessYuan on 09/12/2016.
@@ -56,6 +61,8 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
 
     private CommonRCLVAdapter<Repository> repositoryAdapter;
     private CommonRCLVAdapter<User> userAdapter;
+
+    private Subject<String> mSubject = PublishSubject.create();
 
     @Inject
     GithubPresenter mPresenter;
@@ -92,6 +99,7 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
 
         // initial layout view
         init();
+        setSubject();
     }
 
     @Override
@@ -140,25 +148,35 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                if (TextUtils.isEmpty(newText)) {
-                    if (repositoryAdapter != null) {
-                        repositoryAdapter.clearData();
-                    }
-
-                    if (userAdapter != null) {
-                        userAdapter.clearData();
-                    }
-                }
-
-                if ("User".equals(searchKey)) {
-                    mPresenter.searchUser(newText);
-                } else {
-                    mPresenter.searchRepository(newText);
-                }
+                mSubject.onNext(newText);
 
                 return true;
             }
         });
+    }
+
+    private void setSubject() {
+        mSubject.debounce(800, TimeUnit.MILLISECONDS)
+                .subscribe(new Consumer<String>() {
+                    @Override
+                    public void accept(String s) throws Exception {
+                        if (TextUtils.isEmpty(s)) {
+                            if (repositoryAdapter != null) {
+                                repositoryAdapter.clearData();
+                            }
+
+                            if (userAdapter != null) {
+                                userAdapter.clearData();
+                            }
+                        }
+
+                        if ("User".equals(searchKey)) {
+                            mPresenter.searchUser(s);
+                        } else {
+                            mPresenter.searchRepository(s);
+                        }
+                    }
+                });
     }
 
     private void setSpinner() {
@@ -230,12 +248,12 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
         repositoryAdapter = new CommonRCLVAdapter<Repository>(getActivity(),android.R.layout.simple_list_item_1, null) {
             @Override
             public void onBindViewHolder(CommonViewHolder holder, int position, final Repository data) {
-                holder.getTextViewById(android.R.id.text1).setText(data.getFull_name());
+                holder.getTextViewById(android.R.id.text1).setText(data.getFullName());
 
                 holder.itemView.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        mPresenter.openRepository(data);
+                        mPresenter.openRepository(data, getActivity());
                     }
                 });
             }
@@ -250,14 +268,21 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
     private void setUserAdapter() {
         userAdapter = new CommonRCLVAdapter<User>(getActivity(), R.layout.item_github_user, null) {
             @Override
-            public void onBindViewHolder(CommonViewHolder holder, int position, User data) {
+            public void onBindViewHolder(CommonViewHolder holder, int position, final User data) {
                 Glide.with(getActivity())
-                        .load(data.getAvatar_url())
+                        .load(data.getAvatarUrl())
                         .placeholder(R.drawable.github_placeholder)
                         .error(R.drawable.github_placeholder)
                         .into(holder.getImageViewById(R.id.iv_item_image));
 
                 holder.getTextViewById(R.id.tv_item_username).setText(data.getLogin());
+
+                holder.itemView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        mPresenter.openUser(data, getActivity());
+                    }
+                });
             }
         };
 

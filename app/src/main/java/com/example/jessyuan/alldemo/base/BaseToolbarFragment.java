@@ -23,7 +23,7 @@ import butterknife.ButterKnife;
 
 public class BaseToolbarFragment extends BaseFragment {
 
-    private ActionBar mToolbar;
+    private Toolbar mToolbar;
     private FrameLayout mContentLayout;
     protected View mRootView;
 
@@ -31,15 +31,9 @@ public class BaseToolbarFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         mRootView = inflater.inflate(R.layout.fragment_base_toolbar, container, false);
-        Toolbar toolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) mRootView.findViewById(R.id.toolbar);
         mContentLayout = (FrameLayout) mRootView.findViewById(R.id.fl_content);
-
-        ((AppCompatActivity)getActivity()).setSupportActionBar(toolbar);
-        mToolbar =  ((AppCompatActivity)getActivity()).getSupportActionBar();
-
-        if (mToolbar != null) {
-            mToolbar.setDisplayShowTitleEnabled(true);
-        }
+        ((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
 
         return mRootView;
     }
@@ -49,8 +43,16 @@ public class BaseToolbarFragment extends BaseFragment {
         super.onCreate(savedInstanceState);
     }
 
-    protected ActionBar getToolbar() {
+    protected Toolbar getToolbar() {
         return mToolbar;
+    }
+
+    protected ActionBar getActionBar() {
+        return ((AppCompatActivity)getActivity()).getSupportActionBar();
+    }
+
+    protected void setTitle(String title) {
+        getToolbar().setTitle(title);
     }
 
 

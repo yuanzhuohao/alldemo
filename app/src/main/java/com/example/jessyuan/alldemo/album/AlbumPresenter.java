@@ -45,6 +45,8 @@ public class AlbumPresenter implements AlbumContract.AlbumPresenter {
 
     private Folder currentFolder;
 
+    private Disposable mDisposable;
+
     @Inject
     ImageLoader mImageLoader;
 

@@ -10,4 +10,11 @@
             android:layout_height="wrap_content"
             android:text="CompositeDisposable"/>
 
+    <com.example.jessyuan.alldemo.ui.PhotoViewer
+            android:id="@+id/photoviewer"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:background="@drawable/developers_logo"
+            android:layout_gravity="center"/>
+
 </LinearLayout>

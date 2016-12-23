@@ -35,6 +35,7 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
@@ -63,6 +64,7 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
     private CommonRCLVAdapter<User> userAdapter;
 
     private Subject<String> mSubject = PublishSubject.create();
+    private Disposable mDisposable;
 
     @Inject
     GithubPresenter mPresenter;
@@ -156,7 +158,7 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
     }
 
     private void setSubject() {
-        mSubject.debounce(800, TimeUnit.MILLISECONDS)
+        mDisposable = mSubject.debounce(800, TimeUnit.MILLISECONDS)
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {
@@ -302,5 +304,13 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
     @Override
     public void showUser(List<User> list) {
         userAdapter.setData(list);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (mDisposable != null && !mDisposable.isDisposed()) {
+            mDisposable.dispose();
+        }
     }
 }

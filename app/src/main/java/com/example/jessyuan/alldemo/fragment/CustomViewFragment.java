@@ -37,6 +37,8 @@ public class CustomViewFragment extends BaseNaviFragment {
         super.onViewCreated(view, savedInstanceState);
         setContentView(R.layout.fragment_custom_view);
         getToolbar().setTitle("CustomView");
+
+        setHasOptionsMenu(true);
     }
 
     @Override
@@ -84,4 +86,6 @@ public class CustomViewFragment extends BaseNaviFragment {
 
         LogUtils.i(TAG, "disposables count: " + disposables.size());
     }
+
+
 }

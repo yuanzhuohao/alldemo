@@ -65,7 +65,7 @@ public class GithubPresenter implements GithubContract.GithubPresenter {
             mView.showRepository(null);
         }
 
-        mGithubService.searchRepositories(text)
+         mGithubService.searchRepositories(text)
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<JsonObject>() {

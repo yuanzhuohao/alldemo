@@ -1,6 +1,7 @@
 apply plugin: 'com.android.application'
 apply plugin: 'com.neenbedankt.android-apt'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 24
@@ -49,40 +50,34 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    compile fileTree(include: ['*.jar'], dir: 'libs')
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
     compile project(':mylibrary')
     compile project(':permissionmanager')
-
     compile support.appcompat_v7
     compile support.design
     compile support.recyclerview
-
     // butterknife
     compile butterknife.main
     apt butterknife.compiler
-
+    // glide
     compile glide
-
     // dagger
     compile dagger.main
     apt dagger.apt
     provided dagger.provided
-
     // network
     compile retrofit.retrofit
     compile retrofit.converter_gson
     compile retrofit.adapter_rxjava
     compile okhttp
-
     // Reactive
     compile reactive.rxjava
     compile reactive.rxandroid
-
     compile guava
-
     compile 'com.google.firebase:firebase-crash:9.6.1'
     compile 'com.google.firebase:firebase-auth:9.6.1'
+    compile files('libs/BaiduLBS_Android.jar')
 }

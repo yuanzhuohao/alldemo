@@ -1,91 +1,29 @@
 package com.example.jessyuan.alldemo.fragment;
 
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 
 import com.example.jessyuan.alldemo.R;
-import com.example.jessyuan.alldemo.base.BaseNaviFragment;
-import com.example.mylibrary.LogUtils;
-import com.example.mylibrary.RxBus;
-import com.example.mylibrary.ToastUtils;
+import com.example.jessyuan.alldemo.base.BaseFragment;
 
-import java.util.concurrent.Callable;
-
-import butterknife.OnClick;
-import io.reactivex.Observable;
-import io.reactivex.ObservableSource;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.disposables.CompositeDisposable;
-import io.reactivex.observers.DisposableObserver;
-import io.reactivex.schedulers.Schedulers;
+import butterknife.ButterKnife;
 
 /**
  * Created by JessYuan on 30/11/2016.
  */
 
-public class CustomViewFragment extends BaseNaviFragment {
+public class CustomViewFragment extends BaseFragment {
 
     private static final String TAG = "CustomViewFragment";
 
-    CompositeDisposable disposables = new CompositeDisposable();
-
+    @Nullable
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        setContentView(R.layout.fragment_custom_view);
-        getToolbar().setTitle("CustomView");
-
-        setHasOptionsMenu(true);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_custom_view, container, false);
+        ButterKnife.bind(this, view);
+        return view;
     }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
-    @Override
-    public void onDestroy() {
-        super.onDestroy();
-        disposables.clear();
-    }
-
-    private Observable<String> getObservable() {
-        return Observable.defer(new Callable<ObservableSource<? extends String>>() {
-            @Override
-            public ObservableSource<? extends String> call() throws Exception {
-                SystemClock.sleep(3000);
-                return Observable.just("one", "two", "three", "four", "five");
-            }
-        });
-    }
-
-    @OnClick(R.id.btn_button1)
-    void button1() {
-        disposables.add(getObservable()
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread())
-                            .subscribeWith(new DisposableObserver<String>() {
-                                @Override
-                                public void onNext(String value) {
-                                    ToastUtils.makeTextShort(getActivity(), value);
-                                }
-
-                                @Override
-                                public void onError(Throwable e) {
-                                    LogUtils.e(TAG, e.getMessage());
-                                }
-
-                                @Override
-                                public void onComplete() {
-                                    ToastUtils.makeTextShort(getActivity(), "complete");
-                                }
-                            }));
-
-        LogUtils.i(TAG, "disposables count: " + disposables.size());
-    }
-
-
 }

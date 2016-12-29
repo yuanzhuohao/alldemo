@@ -56,7 +56,6 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
 
     private GridPlacingDecoration mDecoration;
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

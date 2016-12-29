@@ -37,6 +37,12 @@ public class NetworkModule {
         return new Cache(application.getCacheDir(), cacheSize);
     }
 
+    /**
+     * okhttpclient dependent on cache
+     * @param cache
+     * @return
+     */
+    //
     @Provides
     @Singleton
     OkHttpClient provideOkhttpClient(Cache cache) {
@@ -53,6 +59,12 @@ public class NetworkModule {
         return builder.create();
     }
 
+    /**
+     * retrofit dependent on okhttpclient, gson and base url
+     * @param client
+     * @param gson
+     * @return
+     */
     @Provides
     @Singleton
     Retrofit provideRetrofit(OkHttpClient client, Gson gson) {

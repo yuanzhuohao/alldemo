@@ -23,10 +23,23 @@
                 android:text="Album"/>
 
         <Button
+                android:id="@+id/btn_baidumap"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Baidu Map"/>
+
+        <Button
+                android:id="@+id/btn_weather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Weahter App"/>
+
+        <Button
                 android:id="@+id/btn_custom_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Custom View"/>
+
 
     </LinearLayout>
 

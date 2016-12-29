@@ -1,24 +1,12 @@
 package com.example.jessyuan.alldemo.ui;
 
-import android.animation.ValueAnimator;
 import android.content.Context;
-import android.graphics.PointF;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.SparseArray;
-import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.ScaleAnimation;
 import android.widget.ImageView;
-
-import com.example.jessyuan.alldemo.R;
-import com.example.mylibrary.ToastUtils;
-
-import butterknife.OnClick;
 
 /**
  * Created by JessYuan on 21/12/2016.

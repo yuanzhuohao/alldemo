@@ -69,9 +69,11 @@ public class GithubPresenter implements GithubContract.GithubPresenter {
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe(new Observer<JsonObject>() {
+                        private Disposable mDisposable;
+
                         @Override
                         public void onSubscribe(Disposable d) {
-
+                            mDisposable = d;
                         }
 
                         @Override
@@ -93,7 +95,9 @@ public class GithubPresenter implements GithubContract.GithubPresenter {
 
                         @Override
                         public void onComplete() {
-
+                            if (mDisposable != null && !mDisposable.isDisposed()) {
+                                mDisposable.dispose();
+                            }
                         }
                     });
     }

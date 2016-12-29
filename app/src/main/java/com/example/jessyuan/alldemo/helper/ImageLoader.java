@@ -19,6 +19,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
@@ -33,6 +34,7 @@ import io.reactivex.schedulers.Schedulers;
  * Created by JessYuan on 25/11/2016.
  */
 
+@Singleton
 public class ImageLoader {
 
     String[] columnIndexs = new String[] {

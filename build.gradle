@@ -11,6 +11,7 @@ buildscript {
         // in the individual module build.gradle files
         classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
         classpath 'com.google.gms:google-services:3.0.0'
+        classpath "io.realm:realm-gradle-plugin:2.2.1"
 
     }
 }

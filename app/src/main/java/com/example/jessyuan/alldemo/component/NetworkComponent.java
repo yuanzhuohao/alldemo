@@ -2,6 +2,8 @@ package com.example.jessyuan.alldemo.component;
 
 import com.google.gson.Gson;
 
+import android.app.Application;
+
 import com.example.jessyuan.alldemo.module.ApplicationModule;
 import com.example.jessyuan.alldemo.module.NetworkModule;
 
@@ -11,7 +13,7 @@ import dagger.Component;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
-/**
+/** This component involves retrofit, okhttpclient, and gson
  * Created by JessYuan on 15/12/2016.
  */
 

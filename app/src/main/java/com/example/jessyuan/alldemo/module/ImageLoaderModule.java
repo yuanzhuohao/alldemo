@@ -13,7 +13,7 @@ import dagger.Provides;
  * Created by JessYuan on 14/12/2016.
  */
 
-@Module(includes = ApplicationModule.class)
+@Module
 public class ImageLoaderModule {
 
     @Provides

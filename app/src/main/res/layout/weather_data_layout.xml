@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:showIn="@layout/fragment_weather">
+
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="right">
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="日出: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="日落: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="相对湿度: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="风: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="体感温度: "
+                android:layout_marginBottom="@dimen/margin_small"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="降水量: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="气压: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="能见度: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text="紫外线指数: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="PM2.5: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="空气质量指数: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="空气质量: "
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="left">
+
+        <TextView
+                android:id="@+id/tv_weather_sr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_ss"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_hum"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_wind"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_fl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_marginBottom="@dimen/margin_small"
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_pcpn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_pres"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_vis"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_uv"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="@dimen/margin_small"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_api"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_qlty"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+        <TextView
+                android:id="@+id/tv_weather_pm25"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:textColor="@color/white"
+                android:textSize="@dimen/font_small"/>
+
+    </LinearLayout>
+
+</LinearLayout>

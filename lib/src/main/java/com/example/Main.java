@@ -6,9 +6,7 @@ package com.example;
 
 public class Main {
     public static void main(String[] args) {
-        String str = "asdfadf}\n{asdf";
-        System.out.println(str);
-        str = str.replaceAll("\\}\\n\\{","\\},\\{");
-        System.out.println(str);
+        int i = Integer.valueOf("01");
+        System.out.println(i);
     }
 }

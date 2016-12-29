@@ -7,11 +7,11 @@ import java.lang.annotation.RetentionPolicy;
 import javax.inject.Scope;
 
 /**
- * Created by JessYuan on 15/12/2016.
+ * Created by JessYuan on 27/12/2016.
  */
 
 @Documented
 @Scope
 @Retention(RetentionPolicy.RUNTIME)
-public @interface GithubScoped {
+public @interface WeatherScoped {
 }

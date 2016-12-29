@@ -2,7 +2,6 @@ package com.example.jessyuan.alldemo.githubapi;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
@@ -24,7 +23,6 @@ import com.example.jessyuan.alldemo.component.NetworkComponent;
 import com.example.jessyuan.alldemo.model.Repository;
 import com.example.jessyuan.alldemo.model.User;
 import com.example.jessyuan.alldemo.module.ApplicationModule;
-import com.example.jessyuan.alldemo.module.GithubServiceModule;
 import com.example.jessyuan.alldemo.module.NetworkModule;
 import com.example.jessyuan.alldemo.ui.VerticalItemDecoration;
 import com.example.mylibrary.common.CommonRCLVAdapter;
@@ -35,8 +33,10 @@ import java.util.concurrent.TimeUnit;
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -159,6 +159,8 @@ public class GithubFragment extends BaseToolbarFragment implements GithubContrac
 
     private void setSubject() {
         mDisposable = mSubject.debounce(800, TimeUnit.MILLISECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(String s) throws Exception {

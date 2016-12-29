@@ -2,14 +2,17 @@ package com.example.jessyuan.alldemo.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;
 
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.album.AlbumFragment;
+import com.example.jessyuan.alldemo.baidumap.BaiduMapFragment;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.jessyuan.alldemo.githubapi.GithubFragment;
+import com.example.jessyuan.alldemo.weather.WeatherFragment;
 import com.example.mylibrary.FragmentUtils;
 import com.example.mylibrary.ToastUtils;
 
@@ -48,6 +51,20 @@ public class MainFragment extends BaseToolbarFragment {
     void githubapi() {
         FragmentUtils.replaceFragment(getFragmentManager(),
                 new GithubFragment(),
+                android.R.id.content);
+    }
+
+    @OnClick(R.id.btn_baidumap)
+    void baidumap() {
+        FragmentUtils.replaceFragment(getFragmentManager(),
+                new BaiduMapFragment(),
+                android.R.id.content);
+    }
+
+    @OnClick(R.id.btn_weather)
+    void weather() {
+        FragmentUtils.replaceFragment(getFragmentManager(),
+                new WeatherFragment(),
                 android.R.id.content);
     }
 

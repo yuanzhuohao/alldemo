@@ -1,6 +1,5 @@
 package com.example.jessyuan.alldemo.album;
 
-import com.example.jessyuan.alldemo.Scoped.AlbumScoped;
 import com.example.jessyuan.alldemo.module.ImageLoaderModule;
 
 import javax.inject.Singleton;

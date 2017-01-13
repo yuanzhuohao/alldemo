@@ -1,17 +1,15 @@
 package com.example.jessyuan.alldemo.weather;
 
-import android.animation.Animator;
 import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.text.TextUtils;
 import android.view.View;
-import android.view.animation.AnimationSet;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -20,7 +18,6 @@ import com.example.jessyuan.alldemo.api.WeatherService;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.jessyuan.alldemo.component.DaggerNetworkComponent;
 import com.example.jessyuan.alldemo.component.NetworkComponent;
-import com.example.jessyuan.alldemo.model.Image;
 import com.example.jessyuan.alldemo.ui.ProgressDialogFragment;
 import com.example.jessyuan.alldemo.model.Weather;
 import com.example.jessyuan.alldemo.module.ApplicationModule;
@@ -86,14 +83,24 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
 
     @BindView(R.id.nsv_container)
     NestedScrollView mNestedScrollView;
+    @BindView(R.id.pb_wheather_progress)
+    ProgressBar mProgressBar;
 
     @Inject
     WeatherPresenter mPresenter;
-    @Inject
-    ProgressDialogFragment mProgressDialog;
 
     private CommonRCLVAdapter<Weather.DailyForecastBean> mDailyAdapter;
     private CommonRCLVAdapter<Weather.HourlyForecastBean> mHourlyAdapter;
+
+    public static WeatherFragment newInstance(String city) {
+
+        Bundle args = new Bundle();
+
+        WeatherFragment fragment = new WeatherFragment();
+        args.putString("city", city);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -107,7 +114,7 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
 
         NetworkComponent networkComponent = DaggerNetworkComponent.builder()
                 .applicationModule(new ApplicationModule(getActivity().getApplication()))
-                .networkModule(new NetworkModule(WeatherService.BASE_URL))
+                .networkModule(new NetworkModule(WeatherService.Weather_BASE_URL))
                 .build();
 
         DaggerWeatherComponent.builder()
@@ -119,6 +126,14 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
         init();
 
         mPresenter.start();
+
+        getToolbar().setVisibility(View.GONE);
+
+        if (TextUtils.isEmpty(getArguments().getString("city"))) {
+            mPresenter.startLocation();
+        } else {
+            mPresenter.queryWeather(getArguments().getString("city"));
+        }
     }
 
     private void init() {
@@ -229,12 +244,15 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
 
     @Override
     public void showLoading() {
-        mProgressDialog.show(getFragmentManager(), null);
+        mProgressBar.setVisibility(View.VISIBLE);
+        mNestedScrollView.setVisibility(View.GONE);
+
     }
 
     @Override
     public void dismissLoading() {
-        mProgressDialog.dismiss();
+        mProgressBar.setVisibility(View.GONE);
+        mNestedScrollView.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -258,6 +276,8 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
             return R.drawable.storm;
         } else if (weather.contains("雪")) {
             return R.drawable.snow;
+        } else if (weather.contains("阴")) {
+            return R.drawable.overcast;
         }
 
         return 0;

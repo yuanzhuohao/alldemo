@@ -16,14 +16,14 @@ public class PermissionRationaleDialogFragment extends DialogFragment {
     private static final String ARG_PERMISSION = "PERMISSION";
     private static final String ARG_RATIONALE_MSG = "RATIONALE_MSG";
 
-    private String permission;
+    private String[] permissions;
 
-    public static PermissionRationaleDialogFragment newInstance(String permission, String rationaleMsg) {
+    public static PermissionRationaleDialogFragment newInstance(String[] permissions, String rationaleMsg) {
 
         Bundle args = new Bundle();
 
         PermissionRationaleDialogFragment fragment = new PermissionRationaleDialogFragment();
-        args.putString(ARG_PERMISSION, permission);
+        args.putStringArray(ARG_PERMISSION, permissions);
         args.putString(ARG_RATIONALE_MSG, rationaleMsg);
         fragment.setArguments(args);
         return fragment;
@@ -32,7 +32,7 @@ public class PermissionRationaleDialogFragment extends DialogFragment {
     @NonNull
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        permission = getArguments().getString(ARG_PERMISSION);
+        permissions = getArguments().getStringArray(ARG_PERMISSION);
         String rationaleMsg = getArguments().getString(ARG_RATIONALE_MSG);
 
         return new AlertDialog.Builder(getActivity())
@@ -49,7 +49,7 @@ public class PermissionRationaleDialogFragment extends DialogFragment {
     public void onDismiss(DialogInterface dialog) {
         super.onDismiss(dialog);
         if (getActivity() != null && getActivity() instanceof DialogDismissedListener) {
-            ((DialogDismissedListener)getActivity()).onPermissionRationaleDialogDismiss(permission);
+            ((DialogDismissedListener)getActivity()).onPermissionRationaleDialogDismiss(permissions);
         }
     }
 
@@ -58,6 +58,6 @@ public class PermissionRationaleDialogFragment extends DialogFragment {
      * This is called when dialog dismiss by delegate activity
      */
     public interface DialogDismissedListener {
-        void onPermissionRationaleDialogDismiss(String permission);
+        void onPermissionRationaleDialogDismiss(String[] permissions);
     }
 }

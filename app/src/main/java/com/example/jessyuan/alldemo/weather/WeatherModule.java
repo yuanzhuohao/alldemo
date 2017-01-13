@@ -33,10 +33,4 @@ public class WeatherModule {
     Context provideContext() {
         return mContext;
     }
-
-    @Provides
-    @FragmentScoped
-    ProgressDialogFragment provideProgressDialog() {
-        return new ProgressDialogFragment();
-    }
 }

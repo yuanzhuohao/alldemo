@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+        <FrameLayout
+                android:id="@+id/fl_bottom_navigator_item_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+            <ImageView
+                    android:id="@+id/iv_bottom_navigator_item_icon"
+                    android:layout_width="28dp"
+                    android:layout_height="28dp"
+                    />
+
+            <View
+                    android:id="@+id/v_bottom_navigator_item_notify"
+                    android:layout_width="8dp"
+                    android:layout_height="8dp"
+                    android:layout_gravity="top|right"
+                    android:background="@drawable/red_circyle"/>
+
+        </FrameLayout>
+
+        <android.support.v7.widget.AppCompatCheckedTextView
+                android:id="@+id/tv_bottom_navigator_item_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="3dp"
+                android:text="Label"
+                android:textColor="@color/black"
+                android:layout_below="@+id/fl_bottom_navigator_item_view"
+                android:textSize="@dimen/font_totally_small"
+                android:layout_centerHorizontal="true"/>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

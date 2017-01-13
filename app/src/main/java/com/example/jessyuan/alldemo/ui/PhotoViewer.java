@@ -8,7 +8,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.widget.ImageView;
 
-/**
+/** Not complete
  * Created by JessYuan on 21/12/2016.
  */
 

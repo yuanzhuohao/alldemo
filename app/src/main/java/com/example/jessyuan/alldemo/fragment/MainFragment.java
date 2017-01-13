@@ -13,6 +13,7 @@ import com.example.jessyuan.alldemo.baidumap.BaiduMapFragment;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.jessyuan.alldemo.githubapi.GithubFragment;
 import com.example.jessyuan.alldemo.weather.WeatherFragment;
+import com.example.jessyuan.alldemo.weather.WeatherIndexFragment;
 import com.example.mylibrary.FragmentUtils;
 import com.example.mylibrary.ToastUtils;
 
@@ -64,7 +65,7 @@ public class MainFragment extends BaseToolbarFragment {
     @OnClick(R.id.btn_weather)
     void weather() {
         FragmentUtils.replaceFragment(getFragmentManager(),
-                new WeatherFragment(),
+                new WeatherIndexFragment(),
                 android.R.id.content);
     }
 

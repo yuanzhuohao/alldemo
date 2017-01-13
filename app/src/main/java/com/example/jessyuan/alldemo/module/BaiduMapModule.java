@@ -1,15 +1,10 @@
 package com.example.jessyuan.alldemo.module;
 
-import android.app.Application;
 import android.content.Context;
 
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
-import com.example.jessyuan.alldemo.Scoped.BaiduMapScoped;
 import com.example.jessyuan.alldemo.Scoped.FragmentScoped;
-import com.example.jessyuan.alldemo.Scoped.WeatherScoped;
-
-import javax.inject.Singleton;
 
 import dagger.Module;
 import dagger.Provides;

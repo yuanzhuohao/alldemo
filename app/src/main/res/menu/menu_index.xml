@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item android:id="@+id/menu_device"
+          android:title="设备"
+          android:icon="@drawable/ic_search_white_18dp"
+          android:enabled="true"
+          app:showAsAction="always"/>
+    <item android:id="@+id/menu_shop"
+          android:title="商城"
+          android:icon="@drawable/ic_search_white_18dp"
+          android:enabled="true"
+          app:showAsAction="always"/>
+    <item android:id="@+id/menu_exp"
+          android:title="体验"
+          android:icon="@drawable/ic_search_white_18dp"
+          android:enabled="true"
+          app:showAsAction="always"/>
+    <item android:id="@+id/menu_me"
+          android:title="我的"
+          android:icon="@drawable/ic_search_white_18dp"
+          android:enabled="true"
+          app:showAsAction="always"/>
+</menu>

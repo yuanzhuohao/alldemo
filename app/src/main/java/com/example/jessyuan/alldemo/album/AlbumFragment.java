@@ -74,11 +74,11 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
         setContentView(R.layout.fragment_pick_pictures);
 
         setupAdapter();
-        PermissionManager.askPermission(getActivity(), Manifest.permission.READ_EXTERNAL_STORAGE,
+        PermissionManager.askPermission(getActivity(), new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
                 "Grant Read external storage can load all images from your device",
                 new PermissionListener() {
                     @Override
-                    public void onResult(boolean permissionGranted) {
+                    public void onResult(String permission, boolean permissionGranted) {
                         mPresenter.loadDeviceImages(false);
                     }
                 });
@@ -104,10 +104,21 @@ public class AlbumFragment extends BaseNaviFragment implements AlbumContract.Alb
             removeMenuItem();
             return true;
         } else if (id == R.id.item_toolbar_camera) {
-            takePhoto();
+            PermissionManager.askPermission(getContext(),
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA},
+                    "Grant Camera permission to Take a photo",
+                    new PermissionListener() {
+                        @Override
+                        public void onResult(String permission, boolean permissionGranted) {
+                            if (permission == Manifest.permission.CAMERA && permissionGranted) {
+                                takePhoto();
+                            }
+                        }
+                    }
+            );
             return true;
         } else {
-            mPresenter.loadDeviceImages(false);
+            mPresenter.loadDeviceImages(true);
             return true;
         }
     }

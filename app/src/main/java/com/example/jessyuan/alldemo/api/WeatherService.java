@@ -14,7 +14,7 @@ import retrofit2.http.Url;
  */
 
 public interface WeatherService {
-    public static final String BASE_URL = "http://apis.baidu.com";
+    public static final String Weather_BASE_URL = "http://apis.baidu.com";
 
     @Headers("apikey: 69316a118a4198221e63b9fe151315d8")
     @GET("/heweather/pro/weather")

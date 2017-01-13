@@ -15,8 +15,6 @@ android {
         versionName "1.0"
 
         multiDexEnabled true
-
-        setProperty("archivesBaseName", "AllDemo-$versionName")
     }
 
     buildTypes {

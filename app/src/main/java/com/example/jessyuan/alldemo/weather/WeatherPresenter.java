@@ -2,6 +2,7 @@ package com.example.jessyuan.alldemo.weather;
 
 import com.google.gson.JsonObject;
 
+import android.Manifest;
 import android.content.Context;
 
 import com.baidu.location.BDLocation;
@@ -14,11 +15,10 @@ import com.example.jessyuan.alldemo.model.Weather;
 import com.example.mylibrary.JsonParseUtils;
 import com.example.mylibrary.LogUtils;
 import com.example.mylibrary.ToastUtils;
+import com.example.permissionmanager.PermissionListener;
+import com.example.permissionmanager.PermissionManager;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -59,13 +59,25 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
     @Override
     public void start() {
         mView.showTitle("Weather App");
+    }
 
+    @Override
+    public void startLocation() {
         // init location
         mLocationClient.setLocOption(mClientOption);
         setLocationListener();
-        mLocationClient.start();
+        PermissionManager.askPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
+                "Grant location permission can get location",
+                new PermissionListener() {
+                    @Override
+                    public void onResult(String permission, boolean permissionGranted) {
+                        if (permissionGranted) {
+                            mLocationClient.start();
+                            mView.showLoading();
+                        }
 
-        mView.showLoading();
+                    }
+                });
     }
 
     @Override
@@ -152,7 +164,11 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
             @Override
             public void onReceiveLocation(BDLocation bdLocation) {
                 LogUtils.i(TAG, bdLocation.getCity() + " city id: " + bdLocation.getCityCode());
-                queryWeather(bdLocation.getCity().substring(0, bdLocation.getCity().length() - 1));
+                if (bdLocation.getCity() == null) {
+                    mView.dismissLoading();
+                    ToastUtils.makeTextShort(mContext, "定位失败");
+                }
+                queryWeather(bdLocation.getCity());
                 stopLocation();
             }
         });

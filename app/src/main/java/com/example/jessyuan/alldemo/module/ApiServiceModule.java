@@ -1,7 +1,6 @@
 package com.example.jessyuan.alldemo.module;
 
 import com.example.jessyuan.alldemo.Scoped.FragmentScoped;
-import com.example.jessyuan.alldemo.Scoped.WeatherScoped;
 import com.example.jessyuan.alldemo.api.GithubService;
 import com.example.jessyuan.alldemo.api.WeatherService;
 

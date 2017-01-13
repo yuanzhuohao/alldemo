@@ -4,31 +4,23 @@ import android.content.Context;
 import android.database.Cursor;
 import android.provider.MediaStore;
 
-import com.example.jessyuan.alldemo.listeners.ImageLoaderListener;
 import com.example.jessyuan.alldemo.model.Folder;
 import com.example.jessyuan.alldemo.model.Image;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.ObservableEmitter;
 import io.reactivex.ObservableOnSubscribe;
 import io.reactivex.Observer;
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
-import io.reactivex.schedulers.Schedulers;
 
 /**
  * Created by JessYuan on 25/11/2016.
@@ -62,7 +54,7 @@ public class ImageLoader {
 
     /**
      * clear cache, and load device images
-     * @return
+     * @return Single<List<Folder>>
      */
     public Single<List<Folder>> refreshImages() {
         mCacheDirty = false;
@@ -72,7 +64,7 @@ public class ImageLoader {
 
     /**
      * load memory cache images
-     * @return
+     * @return Observable<List<Folder>>
      */
     private Observable<List<Folder>> loadCacheImages() {
         return Observable.create(new ObservableOnSubscribe<List<Folder>>() {
@@ -89,7 +81,7 @@ public class ImageLoader {
 
     /**
      * load device images
-     * @return
+     * @return Observable<List<Folder>>
      */
     private Observable<List<Folder>> loadDeviceImages() {
         return new Observable<List<Folder>>() {
@@ -103,8 +95,10 @@ public class ImageLoader {
                     observer.onError(new NullPointerException());
                 }
 
+                // save all Image temporary
                 List<Image> temp = new ArrayList<>(cursor.getCount());
 
+                // cache images
                 mCacheDirty = true;
                 if (mCacheFolders == null) {
                     mCacheFolders = new LinkedHashMap<>();
@@ -121,7 +115,6 @@ public class ImageLoader {
                         if (file.exists()) {
                             Image image = new Image(id, name, path, false);
                             temp.add(image);
-
 
                             Folder folder = mCacheFolders.get(bucket);
                             if (folder == null) {

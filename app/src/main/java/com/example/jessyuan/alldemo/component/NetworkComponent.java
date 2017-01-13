@@ -13,7 +13,8 @@ import dagger.Component;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 
-/** This component involves retrofit, okhttpclient, and gson
+/** This component involves retrofit, okhttpclient, and gson, and provide there to other module or
+ * component
  * Created by JessYuan on 15/12/2016.
  */
 

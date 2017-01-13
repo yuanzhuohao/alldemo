@@ -20,20 +20,20 @@ public class PermissionRequestDelegateActivity extends AppCompatActivity impleme
     private static final String EXTRA_RATIONALE_MSG = "EXTRA_RATIONALE_MSG";
     private static final String TAG_PERMISSION_DIALOG_FRAGMENT = "TAG_PERMISSION_DIALOG_FRAGMENT";
 
-    private String permission;
+    private String[] permissions;
     private String rationaleMsg;
 
     /**
      * Set some arguments from PermissionManager
      *
      * @param context
-     * @param permission
+     * @param permissions
      * @param rationaleMsg
      * @return
      */
-    public static Intent newIntent(Context context, String permission, String rationaleMsg) {
+    public static Intent newIntent(Context context, String[] permissions, String rationaleMsg) {
         Intent intent = new Intent(context, PermissionRequestDelegateActivity.class);
-        intent.putExtra(EXTRA_PERMISSION, permission);
+        intent.putExtra(EXTRA_PERMISSION, permissions);
         intent.putExtra(EXTRA_RATIONALE_MSG, rationaleMsg);
         intent.setFlags(Intent.FLAG_ACTIVITY_NO_ANIMATION);
 
@@ -43,7 +43,7 @@ public class PermissionRequestDelegateActivity extends AppCompatActivity impleme
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        permission = getIntent().getStringExtra(EXTRA_PERMISSION);
+        permissions = getIntent().getStringArrayExtra(EXTRA_PERMISSION);
         rationaleMsg = getIntent().getStringExtra(EXTRA_RATIONALE_MSG);
 
         getPermission();
@@ -77,7 +77,12 @@ public class PermissionRequestDelegateActivity extends AppCompatActivity impleme
     private void getPermission() {
         boolean shouldShowRationale = false;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            shouldShowRationale = shouldShowRequestPermissionRationale(permission);
+            for (String permission : permissions) {
+                shouldShowRationale = shouldShowRequestPermissionRationale(permission);
+                if (shouldShowRationale == true) {
+                    break;
+                }
+            }
         }
 
         if (shouldShowRationale && !TextUtils.isEmpty(rationaleMsg)) {
@@ -92,7 +97,7 @@ public class PermissionRequestDelegateActivity extends AppCompatActivity impleme
      * show dialog that display permission rationale
      */
     private void showPermissionRationaleDialog() {
-        PermissionRationaleDialogFragment fragment = PermissionRationaleDialogFragment.newInstance(permission, rationaleMsg);
+        PermissionRationaleDialogFragment fragment = PermissionRationaleDialogFragment.newInstance(permissions, rationaleMsg);
         fragment.show(getSupportFragmentManager(), TAG_PERMISSION_DIALOG_FRAGMENT);
     }
 
@@ -100,12 +105,12 @@ public class PermissionRequestDelegateActivity extends AppCompatActivity impleme
      *  Request Permission from system
      */
     private void askPermission() {
-        ActivityCompat.requestPermissions(this, new String[]{permission}, REQUEST_PERMISSION_CODE);
+        ActivityCompat.requestPermissions(this, permissions, REQUEST_PERMISSION_CODE);
     }
 
     @Override
-    public void onPermissionRationaleDialogDismiss(String per) {
-        if (permission.equals(per)) {
+    public void onPermissionRationaleDialogDismiss(String[] pers) {
+        if (pers.length == permissions.length) {
             askPermission();
         }
     }

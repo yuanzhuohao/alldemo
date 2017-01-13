@@ -11,16 +11,16 @@
             android:padding="@dimen/padding_medium">
 
         <Button
-                android:id="@+id/btn_github_api"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="Github API"/>
-
-        <Button
                 android:id="@+id/btn_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Album"/>
+
+        <Button
+                android:id="@+id/btn_weather"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Weahter App"/>
 
         <Button
                 android:id="@+id/btn_baidumap"
@@ -29,10 +29,10 @@
                 android:text="Baidu Map"/>
 
         <Button
-                android:id="@+id/btn_weather"
+                android:id="@+id/btn_github_api"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Weahter App"/>
+                android:text="Github API"/>
 
         <Button
                 android:id="@+id/btn_custom_view"

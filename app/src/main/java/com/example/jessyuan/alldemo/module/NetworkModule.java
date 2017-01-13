@@ -18,7 +18,7 @@ import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
-/**
+/** All about flavor of network
  * Created by JessYuan on 15/12/2016.
  */
 

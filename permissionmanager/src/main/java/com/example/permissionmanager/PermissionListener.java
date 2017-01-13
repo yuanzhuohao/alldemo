@@ -7,5 +7,5 @@ package com.example.permissionmanager;
  */
 
 public interface PermissionListener {
-    void onResult(boolean permissionGranted);
+    void onResult(String permission, boolean permissionGranted);
 }

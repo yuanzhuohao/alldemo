@@ -1,5 +1,6 @@
 package com.example.jessyuan.alldemo.module;
 
+import com.example.jessyuan.alldemo.Scoped.ActivityScoped;
 import com.example.jessyuan.alldemo.Scoped.FragmentScoped;
 import com.example.jessyuan.alldemo.api.GithubService;
 import com.example.jessyuan.alldemo.api.WeatherService;
@@ -22,7 +23,7 @@ public class ApiServiceModule {
     }
 
     @Provides
-    @FragmentScoped
+    @ActivityScoped
     WeatherService provideWeather(Retrofit retrofit) {
         return retrofit.create(WeatherService.class);
     }

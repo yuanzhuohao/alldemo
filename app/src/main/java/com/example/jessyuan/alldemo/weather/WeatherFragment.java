@@ -7,33 +7,31 @@ import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.example.jessyuan.alldemo.R;
-import com.example.jessyuan.alldemo.api.WeatherService;
-import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
-import com.example.jessyuan.alldemo.component.DaggerNetworkComponent;
-import com.example.jessyuan.alldemo.component.NetworkComponent;
-import com.example.jessyuan.alldemo.ui.ProgressDialogFragment;
+import com.example.jessyuan.alldemo.base.BaseFragment;
 import com.example.jessyuan.alldemo.model.Weather;
-import com.example.jessyuan.alldemo.module.ApplicationModule;
-import com.example.jessyuan.alldemo.module.NetworkModule;
 import com.example.mylibrary.DateUtils;
 import com.example.mylibrary.common.CommonRCLVAdapter;
 
 import javax.inject.Inject;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 
 /**
+ * This Fragment use in WeatherIndexFragment's ViewPager
  * Created by JessYuan on 27/12/2016.
  */
 
-public class WeatherFragment extends BaseToolbarFragment implements WeatherContract.WeatherView {
+public class WeatherFragment extends BaseFragment implements WeatherContract.WeatherView {
 
     private static final String TAG = "WeatherFragment";
 
@@ -83,57 +81,38 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
 
     @BindView(R.id.nsv_container)
     NestedScrollView mNestedScrollView;
-    @BindView(R.id.pb_wheather_progress)
-    ProgressBar mProgressBar;
 
-    @Inject
     WeatherPresenter mPresenter;
 
     private CommonRCLVAdapter<Weather.DailyForecastBean> mDailyAdapter;
     private CommonRCLVAdapter<Weather.HourlyForecastBean> mHourlyAdapter;
 
-    public static WeatherFragment newInstance(String city) {
+    public static WeatherFragment newInstance(Weather weather) {
 
         Bundle args = new Bundle();
 
         WeatherFragment fragment = new WeatherFragment();
-        args.putString("city", city);
+        args.putSerializable("weather", weather);
         fragment.setArguments(args);
         return fragment;
     }
 
+    @Nullable
     @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_weather, container, false);
+        ButterKnife.bind(this, view);
+
+        mPresenter = new WeatherPresenter(getContext(), this);
+        return view;
     }
 
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setContentView(R.layout.fragment_weather);
-
-        NetworkComponent networkComponent = DaggerNetworkComponent.builder()
-                .applicationModule(new ApplicationModule(getActivity().getApplication()))
-                .networkModule(new NetworkModule(WeatherService.Weather_BASE_URL))
-                .build();
-
-        DaggerWeatherComponent.builder()
-                .weatherModule(new WeatherModule(getContext(), this))
-                .networkComponent(networkComponent)
-                .build()
-                .inject(this);
-
         init();
 
-        mPresenter.start();
-
-        getToolbar().setVisibility(View.GONE);
-
-        if (TextUtils.isEmpty(getArguments().getString("city"))) {
-            mPresenter.startLocation();
-        } else {
-            mPresenter.queryWeather(getArguments().getString("city"));
-        }
+        updateView(mPresenter.setSunRiseOrSunSet((Weather) getArguments().get("weather")));
     }
 
     private void init() {
@@ -197,19 +176,14 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
     }
 
     @Override
-    public void showTitle(String title) {
-        getToolbar().setTitle(title);
-    }
-
-    @Override
     public void updateView(Weather weather) {
         mNestedScrollView.setVisibility(View.VISIBLE);
 
         weatherCityTV.setText(weather.getBasic().getCity());
         weatherTV.setText(weather.getNow().getCond().getTxt());
-        temperatureTV.setText(weather.getNow().getTmp() + "°");
-        maxTemperatureTV.setText(weather.getDailyForecast().get(0).getTmp().getMax() + "°");
-        minTemperatureTV.setText(weather.getDailyForecast().get(0).getTmp().getMin() + "°");
+        temperatureTV.setText(weather.getNow().getTmp() + "℃");
+        maxTemperatureTV.setText(weather.getDailyForecast().get(0).getTmp().getMax() + "℃");
+        minTemperatureTV.setText(weather.getDailyForecast().get(0).getTmp().getMin() + "℃");
         dateTV.setText(DateUtils.getWeek("", "yyyy-MM-dd") + "  今天");
 
         mHourlyAdapter.setData(weather.getHourlyForecast());
@@ -223,7 +197,7 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
                     + " " + wind.getSpd() + " km/h"
                     + " " + wind.getSc()
         );
-        flTV.setText(weather.getNow().getFl() + "°");
+        flTV.setText(weather.getNow().getFl() + "℃");
         pcpnTV.setText(weather.getNow().getPcpn() + " mm");
         presTV.setText(weather.getNow().getPres() + " 百帕");
         visTV.setText(weather.getNow().getVis() + " km");
@@ -231,6 +205,8 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
         apiTV.setText(weather.getAqi().getCity().getAqi());
         qltyTV.setText(weather.getAqi().getCity().getQlty());
         pm25TV.setText(weather.getAqi().getCity().getPm25());
+
+        mPresenter.setTip(weather.getSuggestion());
     }
 
     @Override
@@ -243,41 +219,29 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
     }
 
     @Override
-    public void showLoading() {
-        mProgressBar.setVisibility(View.VISIBLE);
-        mNestedScrollView.setVisibility(View.GONE);
-
-    }
-
-    @Override
-    public void dismissLoading() {
-        mProgressBar.setVisibility(View.GONE);
-        mNestedScrollView.setVisibility(View.VISIBLE);
-    }
-
-    @Override
     public void onDestroyView() {
         super.onDestroyView();
         mPresenter.stop();
     }
 
+
     private int matchIcon(String weather) {
         if (weather.contains("多云")) {
             return R.drawable.cloudy;
         } else if (weather.contains("晴")) {
-             return R.drawable.sunny;
+             return R.drawable.clear;
         } else if (weather.contains("雨")) {
             return R.drawable.rain;
         } else if (weather.contains("雪")) {
             return R.drawable.snow;
-        } else if (weather.contains("小雨")) {
-            return R.drawable.small_rain;
+        } else if (weather.contains("阵雨")) {
+            return R.drawable.scattered_showers;
         } else if (weather.contains("暴")) {
-            return R.drawable.storm;
-        } else if (weather.contains("雪")) {
-            return R.drawable.snow;
-        } else if (weather.contains("阴")) {
-            return R.drawable.overcast;
+            return R.drawable.thunderstorm;
+        } else if (weather.contains("雾")) {
+            return R.drawable.fog;
+        } else if (weather.contains("风")) {
+            return R.drawable.wind;
         }
 
         return 0;

@@ -1,9 +1,11 @@
-package com.example.jessyuan.alldemo.weather;
+package com.example.jessyuan.alldemo.weather.weatherindex;
 
 import android.content.Context;
 
+import com.example.jessyuan.alldemo.Scoped.ActivityScoped;
 import com.example.jessyuan.alldemo.Scoped.FragmentScoped;
 import com.example.jessyuan.alldemo.ui.ProgressDialogFragment;
+import com.example.jessyuan.alldemo.weather.WeatherContract;
 
 import dagger.Module;
 import dagger.Provides;
@@ -14,22 +16,22 @@ import dagger.Provides;
 
 @Module
 public class WeatherModule {
-    private WeatherContract.WeatherView mView;
+    private WeatherIndexContract.WeatherIndexView mView;
     private Context mContext;
 
-    public WeatherModule(Context context, WeatherContract.WeatherView view) {
+    public WeatherModule(Context context, WeatherIndexContract.WeatherIndexView view) {
         mContext = context;
         mView = view;
     }
 
     @Provides
-    @FragmentScoped
-    WeatherContract.WeatherView provideView() {
+    @ActivityScoped
+    WeatherIndexContract.WeatherIndexView provideView() {
         return mView;
     }
 
     @Provides
-    @FragmentScoped
+    @ActivityScoped
     Context provideContext() {
         return mContext;
     }

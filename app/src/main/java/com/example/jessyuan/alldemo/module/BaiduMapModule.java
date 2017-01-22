@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
+import com.example.jessyuan.alldemo.Scoped.ActivityScoped;
 import com.example.jessyuan.alldemo.Scoped.FragmentScoped;
 
 import dagger.Module;
@@ -17,13 +18,13 @@ import dagger.Provides;
 public class BaiduMapModule {
 
     @Provides
-    @FragmentScoped
+    @ActivityScoped
     LocationClient provideLocationClient(Context context) {
         return new LocationClient(context);
     }
 
     @Provides
-    @FragmentScoped
+    @ActivityScoped
     LocationClientOption provideClientOption() {
         LocationClientOption option = new LocationClientOption();
         option.setLocationMode(LocationClientOption.LocationMode.Hight_Accuracy);

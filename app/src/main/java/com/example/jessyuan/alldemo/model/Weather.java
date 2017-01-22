@@ -2,13 +2,17 @@ package com.example.jessyuan.alldemo.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by JessYuan on 27/12/2016.
  */
 
-public class Weather {
+public class Weather implements Parcelable {
 
     /**
      * alarms : [{"level":"黄色","stat":"预警中","title":"广东省东莞市气象台发布寒冷黄色预警","txt":"东莞市气象局于12月26日16时00分发布寒冷黄色预警信号，请注意防御。","type":"寒冷"}]
@@ -37,6 +41,23 @@ public class Weather {
     private List<DailyForecastBean> dailyForecast;
     @SerializedName("hourly_forecast")
     private List<HourlyForecastBean> hourlyForecast;
+
+
+    protected Weather(Parcel in) {
+        status = in.readString();
+    }
+
+    public static final Creator<Weather> CREATOR = new Creator<Weather>() {
+        @Override
+        public Weather createFromParcel(Parcel in) {
+            return new Weather(in);
+        }
+
+        @Override
+        public Weather[] newArray(int size) {
+            return new Weather[size];
+        }
+    };
 
     public AqiBean getAqi() {
         return aqi;
@@ -102,13 +123,38 @@ public class Weather {
         this.hourlyForecast = hourlyForecast;
     }
 
-    public static class AqiBean  {
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(status);
+    }
+
+    public static class AqiBean implements Parcelable  {
         /**
          * city : {"aqi":"26","co":"1","no2":"21","o3":"55","pm10":"25","pm25":"9","qlty":"优","so2":"7"}
          */
 
         @SerializedName("city")
         private CityBean city;
+
+        protected AqiBean(Parcel in) {
+        }
+
+        public static final Creator<AqiBean> CREATOR = new Creator<AqiBean>() {
+            @Override
+            public AqiBean createFromParcel(Parcel in) {
+                return new AqiBean(in);
+            }
+
+            @Override
+            public AqiBean[] newArray(int size) {
+                return new AqiBean[size];
+            }
+        };
 
         public CityBean getCity() {
             return city;
@@ -118,7 +164,16 @@ public class Weather {
             this.city = city;
         }
 
-        public static class CityBean  {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+        }
+
+        public static class CityBean implements Parcelable  {
             /**
              * aqi : 26
              * co : 1
@@ -146,6 +201,29 @@ public class Weather {
             private String qlty;
             @SerializedName("so2")
             private String so2;
+
+            protected CityBean(Parcel in) {
+                aqi = in.readString();
+                co = in.readString();
+                no2 = in.readString();
+                o3 = in.readString();
+                pm10 = in.readString();
+                pm25 = in.readString();
+                qlty = in.readString();
+                so2 = in.readString();
+            }
+
+            public static final Creator<CityBean> CREATOR = new Creator<CityBean>() {
+                @Override
+                public CityBean createFromParcel(Parcel in) {
+                    return new CityBean(in);
+                }
+
+                @Override
+                public CityBean[] newArray(int size) {
+                    return new CityBean[size];
+                }
+            };
 
             public String getAqi() {
                 return aqi;
@@ -210,10 +288,27 @@ public class Weather {
             public void setSo2(String so2) {
                 this.so2 = so2;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(aqi);
+                dest.writeString(co);
+                dest.writeString(no2);
+                dest.writeString(o3);
+                dest.writeString(pm10);
+                dest.writeString(pm25);
+                dest.writeString(qlty);
+                dest.writeString(so2);
+            }
         }
     }
 
-    public static class BasicBean  {
+    public static class BasicBean implements Parcelable {
         /**
          * city : 东莞
          * cnty : 中国
@@ -235,6 +330,26 @@ public class Weather {
         private String lon;
         @SerializedName("update")
         private UpdateBean update;
+
+        protected BasicBean(Parcel in) {
+            city = in.readString();
+            cnty = in.readString();
+            id = in.readString();
+            lat = in.readString();
+            lon = in.readString();
+        }
+
+        public static final Creator<BasicBean> CREATOR = new Creator<BasicBean>() {
+            @Override
+            public BasicBean createFromParcel(Parcel in) {
+                return new BasicBean(in);
+            }
+
+            @Override
+            public BasicBean[] newArray(int size) {
+                return new BasicBean[size];
+            }
+        };
 
         public String getCity() {
             return city;
@@ -284,7 +399,21 @@ public class Weather {
             this.update = update;
         }
 
-        public static class UpdateBean  {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(city);
+            dest.writeString(cnty);
+            dest.writeString(id);
+            dest.writeString(lat);
+            dest.writeString(lon);
+        }
+
+        public static class UpdateBean implements Parcelable  {
             /**
              * loc : 2016-12-27 15:52
              * utc : 2016-12-27 07:52
@@ -294,6 +423,23 @@ public class Weather {
             private String loc;
             @SerializedName("utc")
             private String utc;
+
+            protected UpdateBean(Parcel in) {
+                loc = in.readString();
+                utc = in.readString();
+            }
+
+            public static final Creator<UpdateBean> CREATOR = new Creator<UpdateBean>() {
+                @Override
+                public UpdateBean createFromParcel(Parcel in) {
+                    return new UpdateBean(in);
+                }
+
+                @Override
+                public UpdateBean[] newArray(int size) {
+                    return new UpdateBean[size];
+                }
+            };
 
             public String getLoc() {
                 return loc;
@@ -310,10 +456,21 @@ public class Weather {
             public void setUtc(String utc) {
                 this.utc = utc;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(loc);
+                dest.writeString(utc);
+            }
         }
     }
 
-    public static class NowBean  {
+    public static class NowBean implements Parcelable {
         /**
          * cond : {"code":"101","txt":"多云"}
          * fl : 17
@@ -341,6 +498,27 @@ public class Weather {
         private String vis;
         @SerializedName("wind")
         private WindBean wind;
+
+        protected NowBean(Parcel in) {
+            fl = in.readString();
+            hum = in.readString();
+            pcpn = in.readString();
+            pres = in.readString();
+            tmp = in.readString();
+            vis = in.readString();
+        }
+
+        public static final Creator<NowBean> CREATOR = new Creator<NowBean>() {
+            @Override
+            public NowBean createFromParcel(Parcel in) {
+                return new NowBean(in);
+            }
+
+            @Override
+            public NowBean[] newArray(int size) {
+                return new NowBean[size];
+            }
+        };
 
         public CondBean getCond() {
             return cond;
@@ -406,7 +584,22 @@ public class Weather {
             this.wind = wind;
         }
 
-        public static class CondBean  {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(fl);
+            dest.writeString(hum);
+            dest.writeString(pcpn);
+            dest.writeString(pres);
+            dest.writeString(tmp);
+            dest.writeString(vis);
+        }
+
+        public static class CondBean implements Parcelable  {
             /**
              * code : 101
              * txt : 多云
@@ -416,6 +609,23 @@ public class Weather {
             private String code;
             @SerializedName("txt")
             private String txt;
+
+            protected CondBean(Parcel in) {
+                code = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<CondBean> CREATOR = new Creator<CondBean>() {
+                @Override
+                public CondBean createFromParcel(Parcel in) {
+                    return new CondBean(in);
+                }
+
+                @Override
+                public CondBean[] newArray(int size) {
+                    return new CondBean[size];
+                }
+            };
 
             public String getCode() {
                 return code;
@@ -432,9 +642,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(code);
+                dest.writeString(txt);
+            }
         }
 
-        public static class WindBean  {
+        public static class WindBean implements Parcelable {
             /**
              * deg : 60
              * dir : 东北风
@@ -450,6 +671,25 @@ public class Weather {
             private String sc;
             @SerializedName("spd")
             private String spd;
+
+            protected WindBean(Parcel in) {
+                deg = in.readString();
+                dir = in.readString();
+                sc = in.readString();
+                spd = in.readString();
+            }
+
+            public static final Creator<WindBean> CREATOR = new Creator<WindBean>() {
+                @Override
+                public WindBean createFromParcel(Parcel in) {
+                    return new WindBean(in);
+                }
+
+                @Override
+                public WindBean[] newArray(int size) {
+                    return new WindBean[size];
+                }
+            };
 
             public String getDeg() {
                 return deg;
@@ -482,10 +722,23 @@ public class Weather {
             public void setSpd(String spd) {
                 this.spd = spd;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(deg);
+                dest.writeString(dir);
+                dest.writeString(sc);
+                dest.writeString(spd);
+            }
         }
     }
 
-    public static class SuggestionBean  {
+    public static class SuggestionBean implements Parcelable  {
         /**
          * air : {"brf":"良","txt":"气象条件有利于空气污染物稀释、扩散和清除，可在室外正常活动。"}
          * comf : {"brf":"舒适","txt":"白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。"}
@@ -513,6 +766,21 @@ public class Weather {
         private TravBean trav;
         @SerializedName("uv")
         private UvBean uv;
+
+        protected SuggestionBean(Parcel in) {
+        }
+
+        public static final Creator<SuggestionBean> CREATOR = new Creator<SuggestionBean>() {
+            @Override
+            public SuggestionBean createFromParcel(Parcel in) {
+                return new SuggestionBean(in);
+            }
+
+            @Override
+            public SuggestionBean[] newArray(int size) {
+                return new SuggestionBean[size];
+            }
+        };
 
         public AirBean getAir() {
             return air;
@@ -578,7 +846,16 @@ public class Weather {
             this.uv = uv;
         }
 
-        public static class AirBean  {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+        }
+
+        public static class AirBean implements Parcelable {
             /**
              * brf : 良
              * txt : 气象条件有利于空气污染物稀释、扩散和清除，可在室外正常活动。
@@ -589,6 +866,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected AirBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<AirBean> CREATOR = new Creator<AirBean>() {
+                @Override
+                public AirBean createFromParcel(Parcel in) {
+                    return new AirBean(in);
+                }
+
+                @Override
+                public AirBean[] newArray(int size) {
+                    return new AirBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -604,9 +898,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
 
-        public static class ComfBean  {
+        public static class ComfBean implements Parcelable {
             /**
              * brf : 舒适
              * txt : 白天不太热也不太冷，风力不大，相信您在这样的天气条件下，应会感到比较清爽和舒适。
@@ -617,6 +922,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected ComfBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<ComfBean> CREATOR = new Creator<ComfBean>() {
+                @Override
+                public ComfBean createFromParcel(Parcel in) {
+                    return new ComfBean(in);
+                }
+
+                @Override
+                public ComfBean[] newArray(int size) {
+                    return new ComfBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -632,9 +954,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
 
-        public static class CwBean  {
+        public static class CwBean implements Parcelable  {
             /**
              * brf : 较适宜
              * txt : 较适宜洗车，未来一天无雨，风力较小，擦洗一新的汽车至少能保持一天。
@@ -645,6 +978,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected CwBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<CwBean> CREATOR = new Creator<CwBean>() {
+                @Override
+                public CwBean createFromParcel(Parcel in) {
+                    return new CwBean(in);
+                }
+
+                @Override
+                public CwBean[] newArray(int size) {
+                    return new CwBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -660,9 +1010,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
 
-        public static class DrsgBean  {
+        public static class DrsgBean implements Parcelable {
             /**
              * brf : 较冷
              * txt : 建议着厚外套加毛衣等服装。年老体弱者宜着大衣、呢外套加羊毛衫。
@@ -673,6 +1034,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected DrsgBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<DrsgBean> CREATOR = new Creator<DrsgBean>() {
+                @Override
+                public DrsgBean createFromParcel(Parcel in) {
+                    return new DrsgBean(in);
+                }
+
+                @Override
+                public DrsgBean[] newArray(int size) {
+                    return new DrsgBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -688,9 +1066,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
 
-        public static class FluBean  {
+        public static class FluBean implements Parcelable {
             /**
              * brf : 极易发
              * txt : 将有一次强降温过程，天气寒冷，极易发生感冒，请特别注意增加衣服保暖防寒。
@@ -701,6 +1090,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected FluBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<FluBean> CREATOR = new Creator<FluBean>() {
+                @Override
+                public FluBean createFromParcel(Parcel in) {
+                    return new FluBean(in);
+                }
+
+                @Override
+                public FluBean[] newArray(int size) {
+                    return new FluBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -716,9 +1122,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
 
-        public static class SportBean  {
+        public static class SportBean implements Parcelable {
             /**
              * brf : 较适宜
              * txt : 天气较好，但风力较大，推荐您进行室内运动，若在户外运动请注意避风保暖。
@@ -729,6 +1146,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected SportBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<SportBean> CREATOR = new Creator<SportBean>() {
+                @Override
+                public SportBean createFromParcel(Parcel in) {
+                    return new SportBean(in);
+                }
+
+                @Override
+                public SportBean[] newArray(int size) {
+                    return new SportBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -744,9 +1178,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
 
-        public static class TravBean  {
+        public static class TravBean implements Parcelable {
             /**
              * brf : 适宜
              * txt : 天气较好，风稍大，但温度适宜，是个好天气哦。适宜旅游，您可以尽情地享受大自然的无限风光。
@@ -757,6 +1202,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected TravBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<TravBean> CREATOR = new Creator<TravBean>() {
+                @Override
+                public TravBean createFromParcel(Parcel in) {
+                    return new TravBean(in);
+                }
+
+                @Override
+                public TravBean[] newArray(int size) {
+                    return new TravBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -772,9 +1234,20 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
 
-        public static class UvBean  {
+        public static class UvBean implements Parcelable  {
             /**
              * brf : 中等
              * txt : 属中等强度紫外线辐射天气，外出时建议涂擦SPF高于15、PA+的防晒护肤品，戴帽子、太阳镜。
@@ -785,6 +1258,23 @@ public class Weather {
             @SerializedName("txt")
             private String txt;
 
+            protected UvBean(Parcel in) {
+                brf = in.readString();
+                txt = in.readString();
+            }
+
+            public static final Creator<UvBean> CREATOR = new Creator<UvBean>() {
+                @Override
+                public UvBean createFromParcel(Parcel in) {
+                    return new UvBean(in);
+                }
+
+                @Override
+                public UvBean[] newArray(int size) {
+                    return new UvBean[size];
+                }
+            };
+
             public String getBrf() {
                 return brf;
             }
@@ -800,10 +1290,21 @@ public class Weather {
             public void setTxt(String txt) {
                 this.txt = txt;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(brf);
+                dest.writeString(txt);
+            }
         }
     }
 
-    public static class AlarmsBean  {
+    public static class AlarmsBean implements Parcelable {
         /**
          * level : 黄色
          * stat : 预警中
@@ -822,6 +1323,26 @@ public class Weather {
         private String txt;
         @SerializedName("type")
         private String type;
+
+        protected AlarmsBean(Parcel in) {
+            level = in.readString();
+            stat = in.readString();
+            title = in.readString();
+            txt = in.readString();
+            type = in.readString();
+        }
+
+        public static final Creator<AlarmsBean> CREATOR = new Creator<AlarmsBean>() {
+            @Override
+            public AlarmsBean createFromParcel(Parcel in) {
+                return new AlarmsBean(in);
+            }
+
+            @Override
+            public AlarmsBean[] newArray(int size) {
+                return new AlarmsBean[size];
+            }
+        };
 
         public String getLevel() {
             return level;
@@ -862,9 +1383,23 @@ public class Weather {
         public void setType(String type) {
             this.type = type;
         }
+
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(level);
+            dest.writeString(stat);
+            dest.writeString(title);
+            dest.writeString(txt);
+            dest.writeString(type);
+        }
     }
 
-    public static class DailyForecastBean  {
+    public static class DailyForecastBean implements Parcelable {
         /**
          * astro : {"sr":"07:04","ss":"17:48"}
          * cond : {"code_d":"100","code_n":"100","txt_d":"晴","txt_n":"晴"}
@@ -901,6 +1436,28 @@ public class Weather {
         private String vis;
         @SerializedName("wind")
         private WindBeanX wind;
+
+        protected DailyForecastBean(Parcel in) {
+            date = in.readString();
+            hum = in.readString();
+            pcpn = in.readString();
+            pop = in.readString();
+            pres = in.readString();
+            uv = in.readString();
+            vis = in.readString();
+        }
+
+        public static final Creator<DailyForecastBean> CREATOR = new Creator<DailyForecastBean>() {
+            @Override
+            public DailyForecastBean createFromParcel(Parcel in) {
+                return new DailyForecastBean(in);
+            }
+
+            @Override
+            public DailyForecastBean[] newArray(int size) {
+                return new DailyForecastBean[size];
+            }
+        };
 
         public AstroBean getAstro() {
             return astro;
@@ -990,7 +1547,23 @@ public class Weather {
             this.wind = wind;
         }
 
-        public static class AstroBean  {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(date);
+            dest.writeString(hum);
+            dest.writeString(pcpn);
+            dest.writeString(pop);
+            dest.writeString(pres);
+            dest.writeString(uv);
+            dest.writeString(vis);
+        }
+
+        public static class AstroBean implements Parcelable {
             /**
              * sr : 07:04
              * ss : 17:48
@@ -1000,6 +1573,23 @@ public class Weather {
             private String sr;
             @SerializedName("ss")
             private String ss;
+
+            protected AstroBean(Parcel in) {
+                sr = in.readString();
+                ss = in.readString();
+            }
+
+            public static final Creator<AstroBean> CREATOR = new Creator<AstroBean>() {
+                @Override
+                public AstroBean createFromParcel(Parcel in) {
+                    return new AstroBean(in);
+                }
+
+                @Override
+                public AstroBean[] newArray(int size) {
+                    return new AstroBean[size];
+                }
+            };
 
             public String getSr() {
                 return sr;
@@ -1016,9 +1606,20 @@ public class Weather {
             public void setSs(String ss) {
                 this.ss = ss;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(sr);
+                dest.writeString(ss);
+            }
         }
 
-        public static class CondBeanX  {
+        public static class CondBeanX implements Parcelable {
             /**
              * code_d : 100
              * code_n : 100
@@ -1034,6 +1635,38 @@ public class Weather {
             private String txtD;
             @SerializedName("txt_n")
             private String txtN;
+
+            protected CondBeanX(Parcel in) {
+                codeD = in.readString();
+                codeN = in.readString();
+                txtD = in.readString();
+                txtN = in.readString();
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(codeD);
+                dest.writeString(codeN);
+                dest.writeString(txtD);
+                dest.writeString(txtN);
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            public static final Creator<CondBeanX> CREATOR = new Creator<CondBeanX>() {
+                @Override
+                public CondBeanX createFromParcel(Parcel in) {
+                    return new CondBeanX(in);
+                }
+
+                @Override
+                public CondBeanX[] newArray(int size) {
+                    return new CondBeanX[size];
+                }
+            };
 
             public String getCodeD() {
                 return codeD;
@@ -1068,7 +1701,7 @@ public class Weather {
             }
         }
 
-        public static class TmpBean  {
+        public static class TmpBean implements Parcelable {
             /**
              * max : 17
              * min : 8
@@ -1078,6 +1711,23 @@ public class Weather {
             private String max;
             @SerializedName("min")
             private String min;
+
+            protected TmpBean(Parcel in) {
+                max = in.readString();
+                min = in.readString();
+            }
+
+            public static final Creator<TmpBean> CREATOR = new Creator<TmpBean>() {
+                @Override
+                public TmpBean createFromParcel(Parcel in) {
+                    return new TmpBean(in);
+                }
+
+                @Override
+                public TmpBean[] newArray(int size) {
+                    return new TmpBean[size];
+                }
+            };
 
             public String getMax() {
                 return max;
@@ -1094,9 +1744,20 @@ public class Weather {
             public void setMin(String min) {
                 this.min = min;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(max);
+                dest.writeString(min);
+            }
         }
 
-        public static class WindBeanX  {
+        public static class WindBeanX implements Parcelable {
             /**
              * deg : 21
              * dir : 北风
@@ -1112,6 +1773,25 @@ public class Weather {
             private String sc;
             @SerializedName("spd")
             private String spd;
+
+            protected WindBeanX(Parcel in) {
+                deg = in.readString();
+                dir = in.readString();
+                sc = in.readString();
+                spd = in.readString();
+            }
+
+            public static final Creator<WindBeanX> CREATOR = new Creator<WindBeanX>() {
+                @Override
+                public WindBeanX createFromParcel(Parcel in) {
+                    return new WindBeanX(in);
+                }
+
+                @Override
+                public WindBeanX[] newArray(int size) {
+                    return new WindBeanX[size];
+                }
+            };
 
             public String getDeg() {
                 return deg;
@@ -1144,10 +1824,23 @@ public class Weather {
             public void setSpd(String spd) {
                 this.spd = spd;
             }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(deg);
+                dest.writeString(dir);
+                dest.writeString(sc);
+                dest.writeString(spd);
+            }
         }
     }
 
-    public static class HourlyForecastBean  {
+    public static class HourlyForecastBean implements Parcelable {
         /**
          * date : 2016-12-27 16:00
          * hum : 53
@@ -1170,6 +1863,28 @@ public class Weather {
         @SerializedName("wind")
         private WindBeanXX wind;
         private int iconRes; // 是否太阳升起
+
+        protected HourlyForecastBean(Parcel in) {
+            date = in.readString();
+            hum = in.readString();
+            pop = in.readString();
+            pres = in.readString();
+            tmp = in.readString();
+            wind = in.readParcelable(WindBeanXX.class.getClassLoader());
+            iconRes = in.readInt();
+        }
+
+        public static final Creator<HourlyForecastBean> CREATOR = new Creator<HourlyForecastBean>() {
+            @Override
+            public HourlyForecastBean createFromParcel(Parcel in) {
+                return new HourlyForecastBean(in);
+            }
+
+            @Override
+            public HourlyForecastBean[] newArray(int size) {
+                return new HourlyForecastBean[size];
+            }
+        };
 
         public String getDate() {
             return date;
@@ -1227,7 +1942,23 @@ public class Weather {
             this.iconRes = iconRes;
         }
 
-        public static class WindBeanXX  {
+        @Override
+        public int describeContents() {
+            return 0;
+        }
+
+        @Override
+        public void writeToParcel(Parcel dest, int flags) {
+            dest.writeString(date);
+            dest.writeString(hum);
+            dest.writeString(pop);
+            dest.writeString(pres);
+            dest.writeString(tmp);
+            dest.writeParcelable(wind, flags);
+            dest.writeInt(iconRes);
+        }
+
+        public static class WindBeanXX implements Parcelable {
             /**
              * deg : 25
              * dir : 东北风
@@ -1243,6 +1974,25 @@ public class Weather {
             private String sc;
             @SerializedName("spd")
             private String spd;
+
+            protected WindBeanXX(Parcel in) {
+                deg = in.readString();
+                dir = in.readString();
+                sc = in.readString();
+                spd = in.readString();
+            }
+
+            public static final Creator<WindBeanXX> CREATOR = new Creator<WindBeanXX>() {
+                @Override
+                public WindBeanXX createFromParcel(Parcel in) {
+                    return new WindBeanXX(in);
+                }
+
+                @Override
+                public WindBeanXX[] newArray(int size) {
+                    return new WindBeanXX[size];
+                }
+            };
 
             public String getDeg() {
                 return deg;
@@ -1274,6 +2024,19 @@ public class Weather {
 
             public void setSpd(String spd) {
                 this.spd = spd;
+            }
+
+            @Override
+            public int describeContents() {
+                return 0;
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                dest.writeString(deg);
+                dest.writeString(dir);
+                dest.writeString(sc);
+                dest.writeString(spd);
             }
         }
     }

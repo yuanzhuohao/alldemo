@@ -12,26 +12,13 @@ import java.util.List;
 
 public interface WeatherContract {
     interface WeatherView extends BaseView {
-        void showTitle(String title);
         void updateView(Weather weather);
         void updateTipsView(String string);
-        void showLoading();
-        void dismissLoading();
-    }
-
-    interface WeatherIndexView extends BaseView {
-        void showCityWeather(List<String> list);
     }
 
     interface WeatherPresenter extends BasePresenter {
         void start();
-        void startLocation();
-        void queryWeather(String city);
-        void stopLocation();
+        void setTip(Weather.SuggestionBean suggestion);
         void stop();
-    }
-
-    interface WeatherIndexPresenter extends BasePresenter {
-        void saveCity(String city);
     }
 }

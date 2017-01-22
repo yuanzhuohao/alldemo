@@ -58,78 +58,13 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
 
     @Override
     public void start() {
-        mView.showTitle("Weather App");
     }
-
-    @Override
-    public void startLocation() {
-        // init location
-        mLocationClient.setLocOption(mClientOption);
-        setLocationListener();
-        PermissionManager.askPermission(mContext, new String[]{Manifest.permission.ACCESS_COARSE_LOCATION},
-                "Grant location permission can get location",
-                new PermissionListener() {
-                    @Override
-                    public void onResult(String permission, boolean permissionGranted) {
-                        if (permissionGranted) {
-                            mLocationClient.start();
-                            mView.showLoading();
-                        }
-
-                    }
-                });
-    }
-
-    @Override
-    public void queryWeather(String city) {
-        mWeatherService.weather(city)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<JsonObject>() {
-                    private Disposable mDisposable;
-
-                    @Override
-                    public void onSubscribe(Disposable d) {
-                        mDisposable = d;
-                    }
-
-                    @Override
-                    public void onNext(JsonObject jsonObject) {
-                        LogUtils.i(TAG, jsonObject.toString());
-
-                        mView.dismissLoading();
-
-                        final Weather weather = JsonParseUtils.parseToArray(jsonObject,
-                                Weather[].class,
-                                "HeWeather data service 3.0").get(0);
-
-                        setSunRiseOrSunSet(weather);
-                        mView.updateView(weather);
-                        setTip(weather.getSuggestion());
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-                        mView.dismissLoading();
-                        LogUtils.d(TAG, e.getMessage());
-                        ToastUtils.makeTextShort(mContext, e.getMessage());
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        if (mDisposable != null && !mDisposable.isDisposed()) {
-                            mDisposable.dispose();
-                        }
-                    }
-                });
-    }
-
 
     /**
      * Set Tips TextView was polling by RxJava
-     * @param suggestion
      */
-    private void setTip(Weather.SuggestionBean suggestion) {
+    @Override
+    public void setTip(Weather.SuggestionBean suggestion) {
         final List<String> tips = new ArrayList<>();
         tips.add(suggestion.getAir().getTxt());
         tips.add(suggestion.getComf().getTxt());
@@ -157,29 +92,9 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
     }
 
     /**
-     * set Location Client callback listener
-     */
-    private void setLocationListener() {
-        mLocationClient.registerLocationListener(new BDLocationListener() {
-            @Override
-            public void onReceiveLocation(BDLocation bdLocation) {
-                LogUtils.i(TAG, bdLocation.getCity() + " city id: " + bdLocation.getCityCode());
-                if (bdLocation.getCity() == null) {
-                    mView.dismissLoading();
-                    ToastUtils.makeTextShort(mContext, "定位失败");
-                }
-                queryWeather(bdLocation.getCity());
-                stopLocation();
-            }
-        });
-    }
-
-    /**
      * Insert two HourlyForecastBean into list, includs sunrise and sunset
-     * @param weather
-     * @return
      */
-    private Weather setSunRiseOrSunSet(Weather weather) {
+    synchronized public Weather setSunRiseOrSunSet(Weather weather) {
         List<Weather.HourlyForecastBean> list = weather.getHourlyForecast();
         String string_ss = weather.getDailyForecast().get(0).getAstro().getSs();
         String string_sr = weather.getDailyForecast().get(0).getAstro().getSr();
@@ -201,8 +116,10 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
             int spaceIdx = dateStr1.indexOf(" ");
             int colIdx = dateStr1.indexOf(":");
 
-            int int1 = Integer.valueOf(dateStr1.substring(spaceIdx + 1, colIdx));
-            int int2 = Integer.valueOf(dateStr2.substring(spaceIdx + 1, colIdx));
+            int int1 = 0;
+            int int2 = 0;
+            int1 = Integer.valueOf(dateStr1.substring(spaceIdx + 1, colIdx));
+            int2 = Integer.valueOf(dateStr2.substring(spaceIdx + 1, colIdx));
 
             if (i_ss >= int1 && i_ss < int2) {
                 insertIdxSs = i;
@@ -229,11 +146,6 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
 
         weather.setHourlyForecast(list);
         return weather;
-    }
-
-    @Override
-    public void stopLocation() {
-        mLocationClient.stop();
     }
 
     @Override

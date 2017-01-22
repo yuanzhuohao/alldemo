@@ -1,9 +1,8 @@
 package com.example.jessyuan.alldemo.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -12,8 +11,8 @@ import com.example.jessyuan.alldemo.album.AlbumFragment;
 import com.example.jessyuan.alldemo.baidumap.BaiduMapFragment;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.jessyuan.alldemo.githubapi.GithubFragment;
-import com.example.jessyuan.alldemo.weather.WeatherFragment;
-import com.example.jessyuan.alldemo.weather.WeatherIndexFragment;
+import com.example.jessyuan.alldemo.weather.weatherindex.WeatherIndexActivity;
+import com.example.jessyuan.alldemo.weather.weatherindex.WeatherIndexFragment;
 import com.example.mylibrary.FragmentUtils;
 import com.example.mylibrary.ToastUtils;
 
@@ -64,9 +63,7 @@ public class MainFragment extends BaseToolbarFragment {
 
     @OnClick(R.id.btn_weather)
     void weather() {
-        FragmentUtils.replaceFragment(getFragmentManager(),
-                new WeatherIndexFragment(),
-                android.R.id.content);
+        getContext().startActivity(new Intent(getContext(), WeatherIndexActivity.class));
     }
 
     private long lastTimeStamp = 0;

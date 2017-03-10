@@ -58,7 +58,7 @@ public class JsonParseUtils {
     }
 
 
-    /** 把json字符串转为JsonArray对象
+    /** 把json字符串转为List<T>对象
      * @param json
      * @param clazz
      * @param <T>

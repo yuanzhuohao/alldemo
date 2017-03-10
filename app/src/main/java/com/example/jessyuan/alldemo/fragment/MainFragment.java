@@ -2,8 +2,6 @@ package com.example.jessyuan.alldemo.fragment;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
 import android.view.KeyEvent;
 import android.view.View;
 
@@ -12,7 +10,6 @@ import com.example.jessyuan.alldemo.album.AlbumFragment;
 import com.example.jessyuan.alldemo.baidumap.BaiduMapFragment;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.jessyuan.alldemo.githubapi.GithubFragment;
-import com.example.jessyuan.alldemo.weather.WeatherFragment;
 import com.example.jessyuan.alldemo.weather.WeatherIndexFragment;
 import com.example.mylibrary.FragmentUtils;
 import com.example.mylibrary.ToastUtils;
@@ -35,35 +32,35 @@ public class MainFragment extends BaseToolbarFragment {
     }
 
     @OnClick(R.id.btn_album)
-    void pickpicture() {
+    public void album(View view) {
         FragmentUtils.replaceFragment(getFragmentManager(),
                 new AlbumFragment(),
                 android.R.id.content);
     }
 
     @OnClick(R.id.btn_custom_view)
-    void customView() {
+    public void customview(View view) {
         FragmentUtils.replaceFragment(getFragmentManager(),
                 new CustomViewFragment(),
                 android.R.id.content);
     }
 
     @OnClick(R.id.btn_github_api)
-    void githubapi() {
+    public void githubapi(View view) {
         FragmentUtils.replaceFragment(getFragmentManager(),
                 new GithubFragment(),
                 android.R.id.content);
     }
 
     @OnClick(R.id.btn_baidumap)
-    void baidumap() {
+    public void baidumap(View view) {
         FragmentUtils.replaceFragment(getFragmentManager(),
                 new BaiduMapFragment(),
                 android.R.id.content);
     }
 
     @OnClick(R.id.btn_weather)
-    void weather() {
+    public void weather(View view) {
         FragmentUtils.replaceFragment(getFragmentManager(),
                 new WeatherIndexFragment(),
                 android.R.id.content);
@@ -79,7 +76,6 @@ public class MainFragment extends BaseToolbarFragment {
             } else {
                 lastTimeStamp = System.currentTimeMillis();
                 ToastUtils.makeTextShort(getActivity(), "再点击次退出");
-
             }
         } else {
             super.onKeyDown(keyCode, event);

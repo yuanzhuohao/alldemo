@@ -6,6 +6,8 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.example.jessyuan.alldemo.Scoped.FragmentScoped;
 
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 

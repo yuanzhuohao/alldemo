@@ -2,6 +2,7 @@ package com.example.jessyuan.alldemo.weather;
 
 import android.content.Context;
 
+import com.baidu.location.LocationClient;
 import com.example.jessyuan.alldemo.Scoped.FragmentScoped;
 import com.example.jessyuan.alldemo.ui.ProgressDialogFragment;
 

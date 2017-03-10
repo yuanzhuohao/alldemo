@@ -18,8 +18,10 @@ import com.example.jessyuan.alldemo.api.WeatherService;
 import com.example.jessyuan.alldemo.base.BaseToolbarFragment;
 import com.example.jessyuan.alldemo.component.DaggerNetworkComponent;
 import com.example.jessyuan.alldemo.component.NetworkComponent;
-import com.example.jessyuan.alldemo.ui.ProgressDialogFragment;
+import com.example.jessyuan.alldemo.model.weather.DailyForecastBean;
+import com.example.jessyuan.alldemo.model.weather.HourlyForecastBean;
 import com.example.jessyuan.alldemo.model.Weather;
+import com.example.jessyuan.alldemo.model.weather.WindBean;
 import com.example.jessyuan.alldemo.module.ApplicationModule;
 import com.example.jessyuan.alldemo.module.NetworkModule;
 import com.example.mylibrary.DateUtils;
@@ -89,8 +91,8 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
     @Inject
     WeatherPresenter mPresenter;
 
-    private CommonRCLVAdapter<Weather.DailyForecastBean> mDailyAdapter;
-    private CommonRCLVAdapter<Weather.HourlyForecastBean> mHourlyAdapter;
+    private CommonRCLVAdapter<DailyForecastBean> mDailyAdapter;
+    private CommonRCLVAdapter<HourlyForecastBean> mHourlyAdapter;
 
     public static WeatherFragment newInstance(String city) {
 
@@ -148,9 +150,9 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
     }
 
     private void setAdapter() {
-        mDailyAdapter = new CommonRCLVAdapter<Weather.DailyForecastBean>(getContext(), R.layout.item_weather_daily, null) {
+        mDailyAdapter = new CommonRCLVAdapter<DailyForecastBean>(getContext(), R.layout.item_weather_daily, null) {
             @Override
-            public void onBindViewHolder(CommonViewHolder holder, int position, Weather.DailyForecastBean data) {
+            public void onBindViewHolder(CommonViewHolder holder, int position, DailyForecastBean data) {
                 holder.getTextViewById(R.id.tv_item_weather_date).setText(DateUtils.getWeek(data.getDate(), "yyyy-MM-dd"));
                 holder.getTextViewById(R.id.tv_item_weather_max_tmp).setText(data.getTmp().getMax() + "°");
                 holder.getTextViewById(R.id.tv_item_weather_min_tmp).setText(data.getTmp().getMin() + "°");
@@ -173,9 +175,9 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
             }
         };
 
-        mHourlyAdapter = new CommonRCLVAdapter<Weather.HourlyForecastBean>(getContext(), R.layout.item_weather_hourly, null) {
+        mHourlyAdapter = new CommonRCLVAdapter<HourlyForecastBean>(getContext(), R.layout.item_weather_hourly, null) {
             @Override
-            public void onBindViewHolder(CommonViewHolder holder, int position, Weather.HourlyForecastBean data) {
+            public void onBindViewHolder(CommonViewHolder holder, int position, HourlyForecastBean data) {
                 int space_index = data.getDate().indexOf(" ");
                 ImageView imageView = holder.getImageViewById(R.id.iv_item_weather_sun);
                 TextView textView = holder.getTextViewById(R.id.tv_item_weather_tmp);
@@ -218,7 +220,7 @@ public class WeatherFragment extends BaseToolbarFragment implements WeatherContr
         ssTV.setText(weather.getDailyForecast().get(0).getAstro().getSs());
         srTV.setText(weather.getDailyForecast().get(0).getAstro().getSr());
         humTV.setText(weather.getNow().getPcpn() + " %");
-        Weather.NowBean.WindBean wind = weather.getNow().getWind();
+        WindBean wind = weather.getNow().getWind();
         windTV.setText(wind.getDir().substring(0, wind.getDir().length() -1)
                     + " " + wind.getSpd() + " km/h"
                     + " " + wind.getSc()

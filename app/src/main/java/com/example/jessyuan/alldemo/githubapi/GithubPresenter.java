@@ -67,16 +67,16 @@ public class GithubPresenter implements GithubContract.GithubPresenter {
 
          mGithubService.searchRepositories(text)
                     .subscribeOn(Schedulers.io())
-                    .observeOn(AndroidSchedulers.mainThread())
-                    .subscribe(new Observer<JsonObject>() {
-                        private Disposable mDisposable;
+                        .observeOn(AndroidSchedulers.mainThread())
+                                .subscribe(new Observer<JsonObject>() {
+                            private Disposable mDisposable;
 
-                        @Override
-                        public void onSubscribe(Disposable d) {
-                            mDisposable = d;
-                        }
+                            @Override
+                            public void onSubscribe(Disposable d) {
+                                mDisposable = d;
+                            }
 
-                        @Override
+                            @Override
                         public void onNext(JsonObject response) {
                             if (response == null) {
                                 return;

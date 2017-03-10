@@ -11,6 +11,8 @@ import com.baidu.location.LocationClient;
 import com.baidu.location.LocationClientOption;
 import com.example.jessyuan.alldemo.R;
 import com.example.jessyuan.alldemo.api.WeatherService;
+import com.example.jessyuan.alldemo.model.weather.HourlyForecastBean;
+import com.example.jessyuan.alldemo.model.weather.SuggestionBean;
 import com.example.jessyuan.alldemo.model.Weather;
 import com.example.mylibrary.JsonParseUtils;
 import com.example.mylibrary.LogUtils;
@@ -30,6 +32,8 @@ import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 /**
  * Created by JessYuan on 28/12/2016.
@@ -106,6 +110,28 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
                         setSunRiseOrSunSet(weather);
                         mView.updateView(weather);
                         setTip(weather.getSuggestion());
+
+                        Realm realm = Realm.getDefaultInstance();
+                        realm.beginTransaction();
+
+                        realm.executeTransactionAsync(new Realm.Transaction() {
+                            @Override
+                            public void execute(Realm realm) {
+                                realm.copyToRealm(weather);
+                            }
+                        }, new Realm.Transaction.OnSuccess() {
+                            @Override
+                            public void onSuccess() {
+                                LogUtils.d("sace weather", "done!");
+                            }
+                        }, new Realm.Transaction.OnError() {
+                            @Override
+                            public void onError(Throwable error) {
+                                LogUtils.d("sace weather", "done!");
+                            }
+                        });
+
+                        realm.commitTransaction();
                     }
 
                     @Override
@@ -129,7 +155,7 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
      * Set Tips TextView was polling by RxJava
      * @param suggestion
      */
-    private void setTip(Weather.SuggestionBean suggestion) {
+    private void setTip(SuggestionBean suggestion) {
         final List<String> tips = new ArrayList<>();
         tips.add(suggestion.getAir().getTxt());
         tips.add(suggestion.getComf().getTxt());
@@ -180,7 +206,7 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
      * @return
      */
     private Weather setSunRiseOrSunSet(Weather weather) {
-        List<Weather.HourlyForecastBean> list = weather.getHourlyForecast();
+        List<HourlyForecastBean> list = weather.getHourlyForecast();
         String string_ss = weather.getDailyForecast().get(0).getAstro().getSs();
         String string_sr = weather.getDailyForecast().get(0).getAstro().getSr();
         // it use split hours and mins value
@@ -215,10 +241,10 @@ public class WeatherPresenter implements WeatherContract.WeatherPresenter {
 
         // insert two bean into list
         if (insertIdxSr != -1 && insertIdxSs != -1) {
-            Weather.HourlyForecastBean sunset = new Weather.HourlyForecastBean();
+            HourlyForecastBean sunset = new HourlyForecastBean();
             sunset.setDate(string_ss);
             sunset.setIconRes(R.drawable.sunset);
-            Weather.HourlyForecastBean sunrise = new Weather.HourlyForecastBean();
+            HourlyForecastBean sunrise = new HourlyForecastBean();
             sunrise.setDate(string_sr);
             sunrise.setIconRes(R.drawable.sunrise);
 

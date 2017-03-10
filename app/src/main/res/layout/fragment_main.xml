@@ -14,31 +14,36 @@
                 android:id="@+id/btn_album"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Album"/>
+                android:text="Album"
+                android:onClick="album"/>
 
         <Button
                 android:id="@+id/btn_weather"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Weahter App"/>
+                android:text="Weahter App"
+                android:onClick="weather"/>
 
         <Button
                 android:id="@+id/btn_baidumap"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Baidu Map"/>
+                android:text="Baidu Map"
+                android:onClick="baidumap"/>
 
         <Button
                 android:id="@+id/btn_github_api"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Github API"/>
+                android:text="Github Api"
+                android:onClick="githubapi"/>
 
         <Button
                 android:id="@+id/btn_custom_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Custom View"/>
+                android:text="Custom View"
+                android:onClick="customview"/>
 
 
     </LinearLayout>
